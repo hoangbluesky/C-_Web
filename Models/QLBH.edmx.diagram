@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="71b6551b74654346bd1ce52d6d76acfb" Name="Diagram1">
+        <EntityTypeShape EntityType="QLBHmvcModel.CTHDBan" Width="1.5" PointX="7.25" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBHmvcModel.CTHDNhap" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBHmvcModel.DanhMuc" Width="1.5" PointX="0.75" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBHmvcModel.Hang" Width="1.5" PointX="3" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBHmvcModel.HDBan" Width="1.5" PointX="5" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBHmvcModel.HDNhap" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBHmvcModel.KH" Width="1.5" PointX="2.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBHmvcModel.NCC" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBHmvcModel.NV" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBHmvcModel.sysdiagram" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBHmvcModel.User" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="QLBHmvcModel.FK_CTHDBan_Hang" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBHmvcModel.FK_CTHDBan_HDBan" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBHmvcModel.FK_CTHDNhap_Hang" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBHmvcModel.FK_CTHDNhap_HDNhap" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBHmvcModel.FK_Hang_DanhMuc" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBHmvcModel.FK_HDBan_KH" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBHmvcModel.FK_HDNhap_NCC" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBHmvcModel.FK_HDNhap_NV" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

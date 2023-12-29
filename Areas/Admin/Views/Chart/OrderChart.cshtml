@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "OrderChart";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>OrderChart</h2>
+
+@using (Html.BeginForm("OrderChart", "Chart", FormMethod.Get, new { id = "chartForm" }))
+{
+    <label for="thang">Tháng:</label>
+    <select name="thang" id="thang" required style="width: 70px; padding: 4px; border-radius: 20px;">
+        @for (int i = 1; i <= 12; i++)
+        {
+            <option value="@i">@i</option>
+        }
+    </select>
+
+    <label for="nam">Năm:</label>
+    <select name="nam" id="nam" required style="width: 100px; padding: 4px; border-radius: 20px;">
+        @for (int i = DateTime.Now.Year; i >= 2000; i--)
+        {
+            <option value="@i">@i</option>
+        }
+    </select>
+
+    <button type="submit" style="color: #696cff; 
+         border-color: #696cff; 
+         background: transparent; 
+         outline: none; 
+         padding: 4px 12px; 
+         border-radius: 17px; 
+         margin-left: 16px; ">Search
+    </button>
+}
+<div id="parentChart">
+    <canvas id="chartProduct"></canvas>
+</div>
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/Assets/Chart/Chart.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#chartForm').submit(function (event) {
+                event.preventDefault(); // Ngăn chặn việc gửi form một cách thông thường
+                var formData = $(this).serialize(); // Lấy dữ liệu từ form
+
+                $.ajax({
+                    url: '@Url.Action("OrderChart", "Chart")',
+                    type: 'GET',
+                    data: formData,
+                    success: function (result) {
+                        var productNames = result.ProductNames;
+                        var remainingQuantities = result.RemainingQuantities;
+                        replaceChart();
+                        var ctx = document.getElementById('chartProduct');
+                        var barChartData = {
+                            labels: productNames,
+                            datasets: [{
+                                label: 'Order',
+                                borderWidth: 1,
+                                backgroundColor: '#66C732',
+                                data: remainingQuantities
+                            }]
+                        };
+
+                        // Xóa biểu đồ cũ trước khi vẽ biểu đồ mới
+                        //if (window.myBarChart != undefined)
+                        //    window.myBarChart.destroy();
+
+                        var myBarChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: barChartData
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+        function replaceChart() {
+            var canvas = document.getElementById('chartProduct');
+
+            canvas.parentNode.removeChild(canvas);
+
+            var newCanvas = document.createElement('canvas');
+            newCanvas.id = 'chartProduct';
+
+            var parent = document.getElementById('parentChart');
+            parent.appendChild(newCanvas);
+        }
+    </script>
+}

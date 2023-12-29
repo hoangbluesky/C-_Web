@@ -1,0 +1,158 @@
+﻿@model projectdbfirst.Models.UserDetailsViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <style>
+        .local-btn {
+            width: 60px;
+            color: #000;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .local-btn:hover {
+            color: #fff;
+            background-color: #00BBA6;
+        }
+    </style>
+</head>
+<p>
+    @*@Html.ActionLink("Edit", "Index", new { id = Model.MaKH }) |
+    @Html.ActionLink("Back to List", "Index")*@
+</p>
+
+<!--breadcrumbs area start-->
+<div class="breadcrumbs_area">
+    <div class="row">
+        <div class="col-12">
+            <div class="breadcrumb_content">
+                <ul>
+                    <li><a href="@Url.Action("Index", "Home")">home</a></li>
+                    <li><i class="fa fa-angle-right"></i></li>
+                    <li>my account</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--breadcrumbs area end-->
+<!-- Start Maincontent  -->
+<section class="main_content_area">
+    <div class="account_dashboard">
+        <div class="row">
+            <div class="col-sm-12 col-md-3 col-lg-3">
+                <!-- Nav tabs -->
+                <div class="dashboard_tab_button">
+                    <ul role="tablist" class="nav flex-column dashboard-list">
+                        <li><a href="#dashboard" data-toggle="tab" class="nav-link active">Dashboard</a></li>
+                        <li> <a href="#orders" data-toggle="tab" class="nav-link">Orders</a></li>
+                        <li><a href="#downloads" data-toggle="tab" class="nav-link">Account details</a></li>
+                        <li><a href="#account-details" data-toggle="tab" class="nav-link">Profile</a></li>
+                        <li><a href="@Url.Action("Logout","Account")" class="nav-link">logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-9 col-lg-9">
+                <!-- Tab panes -->
+                <div class="tab-content dashboard_content">
+                    <div class="tab-pane fade show active" id="dashboard">
+                        <h3>Dashboard </h3>
+                        <p>From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">Edit your password and account details.</a></p>
+                    </div>
+                    <div class="tab-pane fade" id="orders">
+                        <h3>Orders</h3>
+                        <div class="coron_table table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr style="text-align: center;">
+                                        <th>Order</th>
+                                        <th>Date</th>
+                                        <th>Total</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (ViewBag.DanhSachHDBan != null)
+                                        {
+                                            int i = 0;
+                                            foreach (var hdBan in ViewBag.DanhSachHDBan)
+                                            {
+                                                i = i + 1;
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td>@hdBan.NgayBan</td>
+                                                    <td>@hdBan.TongTien</td>
+                                                    <td><a href="@Url.Action("DetailsCTHDBan", "MyAccout", new { id = hdBan.MaHDBan})" class="view">view</a></td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="downloads">
+                        <h3>Account detail </h3>
+                        <div class="coron_table table-responsive">
+                            <div class="account_login_form">
+                                @using (Html.BeginForm("UpdateUser", "MyAccout", FormMethod.Post))
+                                {
+                                    @Html.HiddenFor(model => model.User.UserId)
+                                    <label>UserName</label>
+                                    @Html.EditorFor(model => model.User.Username)
+                                    <label>PassWord</label>
+                                    @Html.EditorFor(model => model.User.Password)
+                                    @Html.HiddenFor(model => model.User.Role)
+                                    @Html.HiddenFor(model => model.Kh.MaKH)
+                                    @Html.HiddenFor(model => model.Kh.FullName)
+                                    @Html.HiddenFor(model => model.Kh.DiaChi)
+                                    @Html.HiddenFor(model => model.Kh.DienThoai)
+                                    @Html.HiddenFor(model => model.Kh.Email)
+                                    @Html.HiddenFor(model => model.Kh.KHUserId)
+                                    <div class="save_button primary_btn default_button">
+                                        <input type="submit" value="Save" class="btn local-btn" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="account-details">
+                        <h3>Profile </h3>
+                        <div class="login">
+                            <div class="login_form_container">
+                                <div class="account_login_form">
+                                    @using (Html.BeginForm("UpdateKH", "MyAccout", FormMethod.Post))
+                                    {
+                                        @Html.HiddenFor(model => model.User.UserId)
+                                        @Html.HiddenFor(model => model.User.UserId)
+                                        @Html.HiddenFor(model => model.User.UserId)
+                                        @Html.HiddenFor(model => model.User.Role)
+                                        @Html.HiddenFor(model => model.Kh.MaKH)
+                                        <label>Full Name</label>
+                                        @Html.EditorFor(model => model.Kh.FullName)
+                                        <label>Address</label>
+                                        @Html.EditorFor(model => model.Kh.DiaChi)
+                                        <label>Phone number</label>
+                                        @Html.EditorFor(model => model.Kh.DienThoai)
+                                        <label>Email</label>
+                                        @Html.EditorFor(model => model.Kh.Email)
+                                        @Html.HiddenFor(model => model.Kh.KHUserId)
+                                        <div class="save_button primary_btn default_button">
+                                            <input type="submit" value="Save" class="btn local-btn" />
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Maincontent  -->

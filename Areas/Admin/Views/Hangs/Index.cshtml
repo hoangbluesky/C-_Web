@@ -1,0 +1,101 @@
+﻿@model IPagedList<projectdbfirst.Models.Hang>
+@using PagedList;
+@using PagedList.Mvc;
+@*@model IEnumerable<projectdbfirst.Models.Hang>*@
+
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .card-img-top {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+</style>
+
+<h2>Danh sách sản phẩm</h2>
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+    <div class="alert alert-success alert-dismissible">
+        @ViewBag.SuccessMessage
+        <button type="button" class="close btn-close" data-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger alert-dismissible">
+        @ViewBag.ErrorMessage
+        <button type="button" class="close btn-close" data-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+<p>
+    @Html.ActionLink("Create New", "Create", new { id = ViewBag.DanhMucHienTai }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("Danh mục", "Index", "DanhMucs", new { area = "Admin" }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("danh sách tổng", "Index", new { id = 0 }, new { @class = "btn btn-primary" })
+</p>
+@using (Html.BeginForm("Index","Hangs", new { area = "Admin" }, FormMethod.Post, new { id = ViewBag.DanhMucHienTai }))
+{
+    <div class="input-group" style="width: 300px; transform: translateX(300%); margin: 20px 0;">
+        <input type="search" class="form-control" placeholder="Search name" id="search" name="search" />
+        <button type="submit" class="btn btn-outline-primary">search</button>
+    </div>
+}
+<table class="table">
+    <tr>
+        <th>
+            Mã hàng
+        </th>
+        <th>
+            Tên hàng
+        </th>
+        <th>
+            Số lượng
+        </th>
+        <th>
+            Giá tiền
+        </th>
+        <th>
+            Ảnh
+        </th>
+        <th>
+            Tên danh mục
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaH)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenH)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GiaTien)
+            </td>
+            <td>
+                <img src="@item.Anh" alt="@item.TenH" class="card-img-top" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DanhMuc.Ten)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.MaH }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.MaH }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.MaH, key = ViewBag.DanhMucHienTai }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, id = ViewBag.DanhMucHienTai }))
+</div>

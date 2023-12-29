@@ -1,0 +1,79 @@
+﻿@model projectdbfirst.Models.CTHDNhap
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Sửa chi tiết hóa đơn</h2>
+
+
+@using (Html.BeginForm("Edit","CTHDNhaps"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>CTHDNhap</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.MaHDNhap)
+
+        @Html.HiddenFor(model => model.MaH)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SoLuong, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SoLuong, new { htmlAttributes = new { @class = "form-control", @id = "SoLuongField" } })
+                @Html.ValidationMessageFor(model => model.SoLuong, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DonGia, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DonGia, new { htmlAttributes = new { @class = "form-control", @id = "DonGiaField" } })
+                @Html.ValidationMessageFor(model => model.DonGia, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ThanhTien, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ThanhTien, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "ThanhTienField" } })
+                @Html.ValidationMessageFor(model => model.ThanhTien, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10 mb-2 mt-2">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", new { id = Model.MaHDNhap }, new { @class = "btn btn-primary" })
+</div>
+
+@section Scripts {
+    <script>
+     // Hàm thực hiện tính toán và gán giá trị cho ThanhTien khi SoLuong hoặc DonGia thay đổi
+     document.getElementById('SoLuongField').addEventListener('input', function () {
+         calculateTotal();
+     });
+
+     document.getElementById('DonGiaField').addEventListener('input', function () {
+         calculateTotal();
+     });
+
+     function calculateTotal() {
+         var soLuong = parseFloat(document.getElementById('SoLuongField').value) || 0;
+         var donGia = parseFloat(document.getElementById('DonGiaField').value) || 0;
+         var thanhTien = soLuong * donGia;
+
+         // Hiển thị giá trị tính được lên ô input ThanhTien
+         document.getElementById('ThanhTienField').value = thanhTien; //toFixed(2) để hiển thị hai chữ số sau dấu thập phân
+     }
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

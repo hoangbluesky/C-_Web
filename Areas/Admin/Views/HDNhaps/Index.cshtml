@@ -1,0 +1,82 @@
+﻿@model IPagedList<projectdbfirst.Models.HDNhap>
+@using PagedList;
+@using PagedList.Mvc;
+
+@*@model IEnumerable<projectdbfirst.Models.HDNhap>*@
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Danh sách hóa đơn nhập</h2>
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+    <div class="alert alert-success alert-dismissible">
+        @ViewBag.SuccessMessage
+        <button type="button" class="close btn-close" data-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger alert-dismissible">
+        @ViewBag.ErrorMessage
+        <button type="button" class="close btn-close" data-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Mã hóa đơn nhập
+        </th>
+        <th>
+            Ngày nhập
+        </th>
+        <th>
+            Tổng tiền
+        </th>
+        <th>
+            Tên Nhà cung cấp
+        </th>
+        <th>
+            Tên nhân viên
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaHDNhap)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayNhap)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TongTien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NCC.TenNCC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NV.TenNV)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.MaHDNhap }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.MaHDNhap }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.MaHDNhap }, new { @class = "btn btn-danger" }) |
+                @Html.ActionLink("CT hóa đơn", "Index", "CTHDNhaps", new { id = item.MaHDNhap }, new { @class = "btn btn-dark" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>

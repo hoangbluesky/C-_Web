@@ -1,0 +1,88 @@
+﻿@model IPagedList<projectdbfirst.Models.NVUserViewModel>
+@using PagedList;
+@using PagedList.Mvc;
+
+@*@model IEnumerable<projectdbfirst.Models.NVUserViewModel>*@
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Danh sách thông tin nhân viên</h2>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary"})
+    </p>*@
+<table class="table">
+    <tr>
+        <th>
+            Mã nhân viên
+        </th>
+        <th>
+            Tên nhân viên
+        </th>
+        <th>
+            Giới tính 
+        </th>
+        <th>
+            Địa chỉ
+        </th>
+        <th>
+            Điện thoại
+        </th>
+        <th>
+            Ngày sinh
+        </th>
+        <th>
+            UserName
+        </th>
+        <th>
+            PassWord
+        </th>
+        <th>
+            NVUserID
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NVInfo.MaNV)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NVInfo.TenNV)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NVInfo.GioiTinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NVInfo.DiaChi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NVInfo.DienThoai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NVInfo.NgaySinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserInfo.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserInfo.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NVInfo.NVUserId)
+            </td>
+            <td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.NVInfo.MaNV }, new { @class = "btn btn-primary" })
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>

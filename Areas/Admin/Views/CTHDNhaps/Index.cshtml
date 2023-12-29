@@ -1,0 +1,68 @@
+﻿@model IPagedList<projectdbfirst.Models.CTHDNhap>
+@using PagedList;
+@using PagedList.Mvc;
+
+@*@model IEnumerable<projectdbfirst.Models.CTHDNhap>*@
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Danh mục chi tiết hóa đơn</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", new { Id = ViewBag.ID }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("Hóa đơn", "Index", "HDNhaps", null, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("Danh sách tổng", "Index", new { Id = 0 }, new { @class = "btn btn-primary" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Tên hàng
+        </th>
+        <th>
+            Mã hóa đơn nhập
+        </th>
+        <th>
+            Số lượng
+        </th>
+        <th>
+            Đơn giá
+        </th>
+        <th>
+            Thành tiền
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hang.TenH)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HDNhap.MaHDNhap)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DonGia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ThanhTien)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { key1 = item.MaHDNhap, key2 = item.MaH }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "Details", new { key1 = item.MaHDNhap, key2 = item.MaH }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Delete", "Delete", new { key1 = item.MaHDNhap, key2 = item.MaH }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, Id = 0 }))
+</div>

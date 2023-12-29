@@ -1,0 +1,64 @@
+﻿@model projectdbfirst.Models.CTHDNhap
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Xóa chi tiết hóa đơn</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>CTHDNhap</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SoLuong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoLuong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DonGia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DonGia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ThanhTien)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ThanhTien)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hang.TenH)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hang.TenH)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HDNhap.MaHDNhap)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HDNhap.MaHDNhap)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            @Html.ActionLink("Back to List", "Index", new { id = Model.MaHDNhap }, new { @class = "btn btn-primary"})
+        </div>
+    }
+</div>

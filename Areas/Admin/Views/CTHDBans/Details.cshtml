@@ -1,0 +1,58 @@
+﻿@model projectdbfirst.Models.CTHDBan
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CTHDBan</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SoLuong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoLuong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DonGia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DonGia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ThanhTien)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ThanhTien)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hang.TenH)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hang.TenH)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HDBan.MaHDBan)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HDBan.MaHDBan)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index", new { id = Model.MaHDBan }, new { @class = "btn btn-primary" })
+</p>

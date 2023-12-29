@@ -1,0 +1,215 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <style>
+        .product_thumb a img {
+            width: 252px;
+            height: 326px;
+        }
+        .single_banner a img{
+            width: 370px;
+            height: 195px;
+        }
+    </style>
+</head>
+<div class="row">
+    @*banner slider start*@
+    <div class="col-12">
+        <div class="banner_slider slider_two">
+            <div class="slider_active owl-carousel">
+                <div class="single_slider" style="background-image: url(/Assets/Client/img/slider/bg-1.jpg)">
+                    <div class="slider_content">
+                        <div class="slider_content_inner">
+                            <h1>worship for you</h1>
+                            <p>o(*≧▽≦)ツ┏━┓</p>
+                            <a href="@Url.Action("Shop","Home")">shop now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="single_slider" style="background-image: url(/Assets/Client/img/slider/bg-2.jpg)">
+                    <div class="slider_content">
+                        <div class="slider_content_inner">
+                            <h1>worship for you</h1>
+                            <p>☆*: .｡. o(≧▽≦)o .｡.:*☆<br>☆*: .｡. o(≧▽≦)o .｡.:*☆</p>
+                            <a href="@Url.Action("Shop","Home")">shop now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="single_slider" style="background-image: url(/Assets/Client/img/slider/bg-3.jpg)">
+                    <div class="slider_content">
+                        <div class="slider_content_inner">
+                            <h1>worship for you</h1>
+                            <p>(●'◡'●)</p>
+                            <a href="@Url.Action("Shop","Home")">shop now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*banner slider start*@
+    </div>
+</div>
+@*new product area start*@
+<div class="new_product_area product_two">
+    <div class="row">
+        <div class="col-12">
+            <div class="block_title">
+                <h3>  New Products</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="single_p_active owl-carousel">
+            @{
+                List<projectdbfirst.Models.Hang> data = (List<projectdbfirst.Models.Hang>)ViewBag.Data;
+                var count = 0;
+                if (data.Count > 5)
+                {
+                    count = 5;
+                }
+                else
+                {
+                    count = data.Count;
+                }
+                for (int i = 0; i < count; i++)
+                {
+                    <div class="col-lg-3">
+                        <div class="single_product">
+                            <div class="product_thumb">
+                                <a href="@Url.Action("Details", "Home", new {id = data[i].MaH})">
+                                    <img src="@data[i].Anh" alt="">
+                                </a>
+                                
+                                <div class="product_action">
+                                    <a href="@Url.Action("AddToCart","Cart", new {id = data[i].MaH })"> <i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                </div>
+                            </div>
+                            <div class="product_content">
+                                <span class="product_price">@data[i].GiaTien,000 đ</span>
+                                <h3 class="product_title">@data[i].TenH</h3>
+                            </div>
+                            <div class="product_info">
+                                <ul>
+                                    <li><a href="@Url.Action("AddToWishlist","Wishlist", new {id = data[i].MaH })" title=" Add to Wishlist ">Add to Wishlist</a></li>
+                                    <li><a href="@Url.Action("Details", "Home", new {id = data[i].MaH})" title="Quick view">View Detail</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+@*new product area start*@
+@*banner area start*@
+<div class="banner_area banner_two">
+    <div class="row">
+        @{
+            for (int i = 0; i < 3; i++)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_banner">
+                        <a href="@Url.Action("Details", "Home", new {id = data[i].MaH})"><img src="@data[i].Anh" alt=""></a>
+                        <div class="banner_title">
+                            <p>New product</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+@*banner area end*@
+@*featured product area start*@
+<div class="new_product_area product_two">
+    <div class="row">
+        <div class="col-12">
+            <div class="block_title">
+                <h3>   featured Products</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="single_p_active owl-carousel">
+            @{
+                var c = 0;
+                if (data.Count > 5)
+                {
+                    c = data.Count - 5;
+                }
+                for (int i = c; i < data.Count; i++)
+                {
+                    <div class="col-lg-3">
+                        <div class="single_product">
+                            <div class="product_thumb">
+                                <a href="single-product.html"><img src="@data[i].Anh" alt=""></a>
+                                <div class="product_action">
+                                    <a href="@Url.Action("AddToCart","Cart", new {id = data[i].MaH })"> <i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                </div>
+                            </div>
+                            <div class="product_content">
+                                <span class="product_price">@data[i].GiaTien,000 đ</span>
+                                <h3 class="product_title">@data[i].TenH</h3>
+                            </div>
+                            <div class="product_info">
+                                <ul>
+                                    <li><a href="@Url.Action("AddToWishlist","Wishlist", new {id = data[i].MaH })" title=" Add to Wishlist ">Add to Wishlist</a></li>
+                                    <li><a href="@Url.Action("Details", "Home", new {id = data[i].MaH})" title="Quick view">View Detail</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+</div>
+@*featured product area start*@
+@*blog area start*@
+
+@*brand logo strat*@
+<div class="brand_logo brand_two">
+    <div class="block_title">
+        <h3>Brands</h3>
+    </div>
+    <div class="row">
+        <div class="brand_active owl-carousel">
+            <div class="col-lg-2">
+                <div class="single_brand">
+                    <a href="#"><img src="~/Assets/Client/img/brand/brand1.jpg" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="single_brand">
+                    <a href="#"><img src="~/Assets/Client/img/brand/brand2.jpg" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="single_brand">
+                    <a href="#"><img src="~/Assets/Client/img/brand/brand3.jpg" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="single_brand">
+                    <a href="#"><img src="~/Assets/Client/img/brand/brand4.jpg" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="single_brand">
+                    <a href="#"><img src="~/Assets/Client/img/brand/brand5.jpg" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="single_brand">
+                    <a href="#"><img src="~/Assets/Client/img/brand/brand6.jpg" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*brand logo end*@

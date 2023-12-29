@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--breadcrumbs area start-->
+<div class="breadcrumbs_area">
+    <div class="row">
+        <div class="col-12">
+            <div class="breadcrumb_content">
+                <ul>
+                    <li><a href="@Url.Action("Index", "Home")">home</a></li>
+                    <li><i class="fa fa-angle-right"></i></li>
+                    <li>wishlist</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--breadcrumbs area end-->
+<!--shopping cart area start -->
+<div class="shopping_cart_area">
+    <form action="#">
+        <div class="row">
+            <div class="col-12">
+                <div class="table_desc wishlist">
+                    <div class="cart_page table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="product_remove">Delete</th>
+                                    <th class="product_thumb">Image</th>
+                                    <th class="product_name">Product</th>
+                                    <th class="product-price">Price (nghìn)</th>
+                                    <th class="product_quantity">Stock Status</th>
+                                    <th class="product_total">Add To Cart</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (Session["Wishlist"] != null)
+                                    {
+                                        List<projectdbfirst.Models.WishlistModel> lstWishlist = (List<projectdbfirst.Models.WishlistModel>)Session["Wishlist"];
+                                        for (int i = 0; i < lstWishlist.Count; i++)
+                                        {
+                                            <tr>
+                                                <td class="product_remove">
+                                                    <a href="#" class="delete-product" data-product-id="@lstWishlist[i].ProductID"><i class="fa fa-trash-o"></i></a>
+                                                </td>
+                                                <td class="product_thumb"><a href="#"><img src="@lstWishlist[i].ProductDetail.Anh" alt=""></a></td>
+                                                <td class="product_name">
+                                                    <a href="@Url.Action("Details","Home", new {id = lstWishlist[i].ProductDetail.MaH })">@lstWishlist[i].ProductDetail.TenH</a>
+                                                </td>
+                                                <td class="product-price">@lstWishlist[i].ProductDetail.GiaTien</td>
+                                                <td class="product_quantity">@lstWishlist[i].StockStatus</td>
+                                                <td class="product_total"><a href="@Url.Action("AddToCart","Cart", new {id = lstWishlist[i].ProductDetail.MaH })">Add To Cart</a></td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </form>
+    <div class="row">
+        <div class="col-12">
+            <div class="wishlist-share">
+                <h4>Share on:</h4>
+                <ul>
+                    <li><a href="#"><i class="fa fa-rss"></i></a></li>
+                    <li><a href="#"><i class="fa fa-vimeo"></i></a></li>
+                    <li><a href="#"><i class="fa fa-tumblr"></i></a></li>
+                    <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--shopping cart area end -->
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.delete-product').click(function (e) {
+                e.preventDefault(); // Ngăn chặn hành động mặc định của thẻ a
+
+                var productId = $(this).data('product-id');
+                var form = $('<form action="/Wishlist/DeleteProduct" method="post">' +
+                    '<input type="hidden" name="productId" value="' + productId + '" />' +
+                    '</form>');
+                $('body').append(form);
+                form.submit();
+            });
+        });
+    </script>
+}

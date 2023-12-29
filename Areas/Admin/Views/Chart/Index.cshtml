@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Chart</h2>
+
+<div>
+    <canvas id="chartProduct"></canvas>
+</div>
+
+@section scripts {
+    <script src="~/Assets/Chart/Chart.min.js"></script>
+    <script>
+        var ctx = document.getElementById('chartProduct');
+        var barChartData = {
+            labels: @Html.Raw(Json.Encode(ViewBag.Labels)),
+            datasets: [{
+                label: 'Order',
+                borderWidth: 1,
+                backgroundColor: '#66C732',
+                data: @Html.Raw(Json.Encode(ViewBag.OrderData))
+            }, {
+                label: 'Import',
+                borderWidth: 1,
+                backgroundColor: '#CD3131',
+                data: @Html.Raw(Json.Encode(ViewBag.ImportData))
+            }]
+        };
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: barChartData
+        })
+    </script>
+}

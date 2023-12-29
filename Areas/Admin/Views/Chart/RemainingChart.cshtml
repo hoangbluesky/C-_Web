@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "RemainingChart";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    //var productsData = ViewBag.ProductsData as IEnumerable<dynamic>;
+}
+
+<h2>RemainingChart</h2>
+
+<div>
+    <canvas id="chartProduct"></canvas>
+</div>
+
+@section scripts{
+    <script src="~/Assets/Chart/Chart.min.js"></script>
+    <script>
+        var ctxNew = document.getElementById('chartProduct');
+        var productsData = @Html.Raw(Json.Encode(ViewBag.ProductsData));
+        var productNames = [];
+        var remainingQuantities = [];
+
+        if (productsData !== null && productsData.length > 0) {
+            for (var i = 0; i < productsData.length; i++) {
+                productNames.push(productsData[i].ProductName);
+                remainingQuantities.push(productsData[i].RemainingQuantity);
+            }
+        }
+
+        var newChartProduct = new Chart(ctxNew, {
+            type: 'bar',
+            data: {
+                labels: productNames,
+                datasets: [{
+                    label: 'Số lượng còn lại',
+                    borderWidth: 1,
+                    backgroundColor: '#FF6384',
+                    data: remainingQuantities
+                }]
+            }
+        });
+    </script>
+}

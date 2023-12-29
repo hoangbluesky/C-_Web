@@ -1,0 +1,55 @@
+﻿@model IPagedList<projectdbfirst.Models.HDBan>
+@using PagedList;
+@using PagedList.Mvc;
+
+@*@model IEnumerable<projectdbfirst.Models.HDBan>*@
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create" , null , new { @class="btn btn-primary"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Ngày bán
+        </th>
+        <th>
+            Tổng tiền
+        </th>
+        <th>
+            Tên khách hàng
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayBan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TongTien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KH.FullName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.MaHDBan }, new { @class="btn btn-primary"}) |
+                @Html.ActionLink("Details", "Details", new { id = item.MaHDBan }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.MaHDBan }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>

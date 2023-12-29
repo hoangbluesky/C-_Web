@@ -1,0 +1,143 @@
+﻿@model IPagedList<projectdbfirst.Models.DanhMuc>
+@using PagedList;
+@using PagedList.Mvc;
+@*@model IEnumerable<projectdbfirst.Models.DanhMuc>*@
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <style>
+        
+    </style>
+</head>
+<h2>Danh sách danh mục sản phẩm</h2>
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+    <div class="alert alert-success alert-dismissible">
+        @ViewBag.SuccessMessage
+        <button type="button" class="close btn-close" data-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger alert-dismissible">
+        @ViewBag.ErrorMessage
+        <button type="button" class="close btn-close" data-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Mã danh mục
+        </th>
+        <th>
+            Tên danh mục
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ten)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" }) |
+                @Html.ActionLink("Sản phẩm", "Index", "Hangs", new { id = item.Id }, new { @class = "btn btn-dark" })
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".alert .close").on('click', function () {
+                $(this).parent().hide(); // Ẩn thông báo khi người dùng nhấn nút "X"
+            });
+        });
+    </script>
+
+}
+@*<div class="box-body">
+        <table id="example" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Ten)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ten)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-success" }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" }) |
+                            @Html.ActionLink("Sản phẩm", "Index", "Hangs", new { id = item.Id }, new { @class = "btn btn-dark" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Rendering engine</th>
+                    <th>Browser</th>
+                    <th>Platform(s)</th>
+                    <th>Engine version</th>
+                    <th>CSS grade</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>--><!-- /.box-body -->
+    <!--@section Scripts{-->
+        <!-- jQuery 2.1.4 -->
+        <!--<script src="~/Assets/Pages/plugins/jQuery/jQuery-2.1.4.min.js"></script>-->
+
+        <!-- Bootstrap 3.3.5 -->
+        <!--<script src="~/Assets/Pages/bootstrap/js/bootstrap.min.js"></script>-->
+        <!-- SlimScroll -->
+        <!--<script src="~/Assets/Pages/plugins/slimScroll/jquery.slimscroll.min.js"></script>-->
+        <!-- FastClick -->
+        <!--<script src="~/Assets/Pages/plugins/fastclick/fastclick.min.js"></script>-->
+        <!-- AdminLTE App -->
+        <!--<script src="~/Assets/Pages/dist/js/app.min.js"></script>-->
+        <!-- AdminLTE for demo purposes -->
+        <!--<script src="~/Assets/Pages/dist/js/demo.js"></script>-->
+
+        <!--script custom page-->
+        <!-- DataTables -->
+        <!--<script src="~/Assets/Pages/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/Assets/Pages/plugins/datatables/dataTables.bootstrap.min.js"></script>
+        <script src="~/Assets/Pages/plugins/datatables/dataTables.alphabetSearch.js"></script>
+    }*@

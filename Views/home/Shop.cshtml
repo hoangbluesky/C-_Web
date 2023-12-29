@@ -1,0 +1,180 @@
+﻿@model IPagedList<projectdbfirst.Models.Hang>
+@using PagedList;
+@using PagedList.Mvc;
+
+@*@model IEnumerable<projectdbfirst.Models.Hang>*@
+
+@{
+    ViewBag.Title = "Shop";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <style>
+        .design {
+            border-top: 1px solid #999;
+            border-bottom: 1px solid #999;
+        }
+    </style>
+</head>
+<!--breadcrumbs area start-->
+<div class="breadcrumbs_area">
+    <div class="row">
+        <div class="col-12">
+            <div class="breadcrumb_content">
+                <ul>
+                    <li><a href="@Url.Action("Index", "Home")">home</a></li>
+                    <li><i class="fa fa-angle-right"></i></li>
+                    <li>shop fullwidth</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--breadcrumbs area end-->
+<!--pos home section-->
+<div class=" pos_home_section shop_section shop_fullwidth">
+    <div class="row">
+        <div class="col-12">
+            <!--banner slider start-->
+            <div class="banner_slider fullwidht  mb-35">
+                <img src="~/Assets/Client/img/slider/bg-1.jpg" alt="">
+            </div>
+            <!--banner slider start-->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <!--shop toolbar start-->
+            <div class="shop_toolbar list_toolbar mb-35">
+                <div class="list_button">
+                    <ul class="nav" role="tablist">
+                        <li>
+                            <a data-toggle="tab" href="#large" role="tab" aria-controls="large" aria-selected="true"><i class="fa fa-th-large"></i></a>
+                        </li>
+                        <li>
+                            <a class="active" data-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="false"><i class="fa fa-th-list"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="select_option">
+                    <form action="#">
+                        <label>Sort By</label>
+                        <select name="orderby" id="short">
+                            <option selected="" value="1">Position</option>
+                            <option value="1">Price: Lowest</option>
+                            <option value="1">Price: Highest</option>
+                            <option value="1">Product Name:Z</option>
+                            <option value="1">Sort by price:low</option>
+                            <option value="1">Product Name: Z</option>
+                            <option value="1">In stock</option>
+                            <option value="1">Product Name: A</option>
+                            <option value="1">In stock</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+            <!--shop toolbar end-->
+        </div>
+    </div>
+
+    <!--shop tab product-->
+    <div class="shop_tab_product shop_fullwidth">
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade " id="large" role="tabpanel">
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="single_product">
+                                <div class="product_thumb">
+                                    <a href="@Url.Action("Details", "Home", new {id = item.MaH})"><img style="width: 242px; height: 314px;" src="@item.Anh" alt=""></a>
+
+                                    <div class="product_action">
+                                        <a href="@Url.Action("AddToCart","Cart", new {id = item.MaH })"> <i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                    </div>
+                                </div>
+                                <div class="product_content">
+                                    <span class="product_price">@item.GiaTien,000 đ</span>
+                                    <h3 class="product_title"><a href="single-product.html">@item.TenH</a></h3>
+                                </div>
+                                <div class="product_info">
+                                    <ul>
+                                        <li><a href="@Url.Action("AddToWishlist","Wishlist", new {id = item.MaH })" title=" Add to Wishlist ">Add to Wishlist</a></li>
+                                        <li><a href="@Url.Action("Details", "Home", new {id = item.MaH })" title="view">View Detail</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+            <div class="tab-pane fade show active" id="list" role="tabpanel">
+                @foreach (var item in Model)
+                {
+                    //var motaHtml = Html.Raw(item.MoTa);
+
+                    <div class="product_list_item mb-35">
+                        <div class="row align-items-center">
+                            <div class="col-lg-3 col-md-5 col-sm-6">
+                                <div class="product_thumb">
+                                    <a href="@Url.Action("Details", "Home", new {id = item.MaH})"><img style="width: 270px; height: 350px;" src="@item.Anh" alt=""></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-9 col-md-7 col-sm-6">
+                                <div class="list_product_content">
+
+                                    <div class="list_title">
+                                        <h3><a href="single-product.html">@item.TenH</a></h3>
+                                    </div>
+                                    <div class="design" style="height: 65px; overflow: hidden">
+                                        @Html.Raw(item.MoTa)
+                                    </div>
+
+                                    <div class="content_price mt-3">
+                                        <span>@item.GiaTien,000 đ</span>
+                                    </div>
+                                    <div class="add_links">
+                                        <ul>
+                                            <li><a href="@Url.Action("AddToCart","Cart", new {id = item.MaH })" title="add to cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
+                                            <li><a href="@Url.Action("AddToWishlist","Wishlist", new {id = item.MaH })" title="add to wishlist"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
+
+                                            <li><a href="@Url.Action("Details", "Home", new {id = item.MaH })" title="View detail"><i class="fa fa-eye" aria-hidden="true"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+
+        </div>
+    </div>
+    <!--shop tab product end-->
+    <!--pagination style start-->
+    <div class="pagination_style shop_page">
+        <div class="item_page">
+            @*<form action="#">
+                    <label for="page_select">show</label>
+                    <select id="page_select">
+                        <option value="1">9</option>
+                        <option value="2">10</option>
+                        <option value="3">11</option>
+                    </select>
+                    <span>Products by page</span>
+                </form>*@
+        </div>
+        <div class="page_number">
+            <div style=" margin-top: -14px;">
+                @Html.PagedListPager(Model, page => Url.Action("Shop", new { page }))
+            </div>
+        </div>
+    </div>
+    <!--pagination style end-->
+</div>
+<!--pos home section end-->
+

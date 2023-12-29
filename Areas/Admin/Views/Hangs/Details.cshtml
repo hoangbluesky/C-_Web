@@ -1,0 +1,65 @@
+﻿@model projectdbfirst.Models.Hang
+
+@{
+    ViewBag.Title = "Details";
+}
+<style>
+    .card-img-top {
+        width: 240px;
+        height: 100px;
+        object-fit: cover;
+    }
+</style>
+
+<h2>Chi tiết</h2>
+
+<div>
+    <h4>Hang</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TenH)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenH)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SoLuong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoLuong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MoTa)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.MoTa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Anh)
+        </dt>
+
+        <dd>
+            <img src="@Model.Anh" alt="@Model.TenH" class="card-img-top" />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DanhMuc.Ten)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DanhMuc.Ten)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MaH }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("Back to List", "Index", new { id = Model.MaDanhMuc }, new { @class = "btn btn-primary"})
+</p>

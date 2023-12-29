@@ -1,0 +1,58 @@
+﻿@model projectdbfirst.Models.CTHDNhap
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Chi tiết</h2>
+
+<div>
+    <h4>CTHDNhap</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SoLuong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoLuong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DonGia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DonGia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ThanhTien)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ThanhTien)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hang.TenH)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hang.TenH)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HDNhap.MaHDNhap)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HDNhap.MaHDNhap)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { key1 = Model.MaHDNhap, key2 = Model.MaH }, new {@class = "btn btn-primary"}) |
+    @Html.ActionLink("Back to List", "Index", new { id = Model.MaHDNhap}, new { @class = "btn btn-primary"})
+</p>

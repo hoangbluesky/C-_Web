@@ -1,0 +1,162 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+    <div class="alert alert-success alert-dismissible">
+        @ViewBag.SuccessMessage
+        <button type="button" class="close btn-close" data-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+<!--breadcrumbs area start-->
+<div class="breadcrumbs_area">
+    <div class="row">
+        <div class="col-12">
+            <div class="breadcrumb_content">
+                <ul>
+                    <li><a href="@Url.Action("Index", "Home")">home</a></li>
+                    <li><i class="fa fa-angle-right"></i></li>
+                    <li>Shopping Cart</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--breadcrumbs area end-->
+<!--shopping cart area start -->
+<div class="shopping_cart_area" style="padding: 35px 0 0 0;">
+    <form action="#">
+        <div class="row">
+            <div class="col-12">
+                <div class="table_desc">
+                    <div class="cart_page table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="product_remove">Delete</th>
+                                    <th class="product_thumb">Image</th>
+                                    <th class="product_name">Product</th>
+                                    <th class="product-price">Price (nghìn)</th>
+                                    <th class="product_quantity">Quantity</th>
+                                    <th class="product_total">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (Session["Cart"] != null)
+                                    {
+                                        List<projectdbfirst.Models.CartModel> lstCart = (List<projectdbfirst.Models.CartModel>)Session["Cart"];
+                                        for (int i = 0; i < lstCart.Count; i++)
+                                        {
+                                            <tr>
+                                                <td class="product_remove">
+                                                    <a href="#" class="delete-product" data-product-id="@lstCart[i].ProductID"><i class="fa fa-trash-o"></i></a>
+                                                </td>
+                                                <td class="product_thumb"><a href="#"><img src="@lstCart[i].ProductDetail.Anh" alt=""></a></td>
+                                                <td class="product_name">
+                                                    <a href="@Url.Action("Details","Home", new {id = lstCart[i].ProductDetail.MaH })">@lstCart[i].ProductDetail.TenH</a>
+                                                </td>
+                                                <td class="product-price" id="GiaTien">@lstCart[i].ProductDetail.GiaTien</td>
+                                                <td class="product_quantity">
+                                                    <input min="0" max="@lstCart[i].ProductDetail.SoLuong" value="@lstCart[i].Quantity" type="number" id="quantity">
+                                                </td>
+                                                <td class="product_total" id="amount">@lstCart[i].Amount</td>
+
+
+                                            </tr>
+                                        }
+                                    }
+
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="cart_submit">
+                        <button type="submit">update cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--coupon code area start-->
+        <div class="coupon_area">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="coupon_code">
+                        <h3>Coupon</h3>
+                        <div class="coupon_inner">
+                            <p>Enter your coupon code if you have one.</p>
+                            <input placeholder="Coupon code" type="text">
+                            <button type="submit">Apply coupon</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="coupon_code">
+                        <h3>Cart Totals</h3>
+                        <div class="coupon_inner">
+
+                            @{
+                                double total = 0;
+                                if (Session["Cart"] != null)
+                                {
+                                    List<projectdbfirst.Models.CartModel> lst = (List<projectdbfirst.Models.CartModel>)Session["Cart"];
+                                    for (int i = 0; i < lst.Count; i++)
+                                    {
+                                        total += lst[i].Amount;
+                                    }
+                                }
+                                <div class="cart_subtotal">
+                                    <p>Total</p>
+                                    <p class="cart_amount">@total</p>
+                                </div>
+                            }
+
+
+                            <div class="checkout_btn">
+                                <a href="@Url.Action("BuyProduct","Cart")">Proceed to Checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--coupon code area end-->
+    </form>
+</div>
+<!--shopping cart area end -->
+@section Scripts {
+    <script>
+        document.getElementById('quantity').addEventListener('input', function () {
+            calculateTotal();
+        });
+        function calculateTotal() {
+            var soLuong = parseFloat(document.getElementById('quantity').value) || 0;
+            var donGia = parseFloat(document.getElementById('GiaTien').textContent) || 0;
+            var thanhTien = soLuong * donGia;
+
+            // Hiển thị giá trị tính được lên ô input ThanhTien
+            document.getElementById('amount').textContent = thanhTien; //toFixed(2) để hiển thị hai chữ số sau dấu thập phân
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.delete-product').click(function (e) {
+                e.preventDefault(); // Ngăn chặn hành động mặc định của thẻ a
+
+                var productId = $(this).data('product-id');
+                var form = $('<form action="/Cart/DeleteProduct" method="post">' +
+                    '<input type="hidden" name="productId" value="' + productId + '" />' +
+                    '</form>');
+                $('body').append(form);
+                form.submit();
+            });
+        });
+    </script>
+}
+

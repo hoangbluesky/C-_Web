@@ -1,0 +1,58 @@
+﻿@model IEnumerable<projectdbfirst.Models.CTHDBan>
+
+@{
+    ViewBag.Title = "DetailsCTHDBan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!--breadcrumbs area start-->
+<div class="breadcrumbs_area">
+    <div class="row">
+        <div class="col-12">
+            <div class="breadcrumb_content">
+                <ul>
+                    <li><a href="@Url.Action("Index", "Home")">home</a></li>
+                    <li><i class="fa fa-angle-right"></i></li>
+                    <li>Details</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--breadcrumbs area end-->
+<table class="table">
+    <thead>
+        <tr style="text-align: center;">
+            <th>Order</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>price</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 0;
+            foreach (var item in Model)
+            {
+                i = i + 1;
+                <tr style="text-align: center">
+                    <td>@i</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Hang.TenH)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SoLuong)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DonGia)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ThanhTien)
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

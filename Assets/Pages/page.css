@@ -1,0 +1,71 @@
+﻿
+/*phân trang dùng pagelist*/
+
+.pagination-container {
+    margin-top: 20px;
+    text-align: right;
+    font-family: Arial, sans-serif;
+}
+
+.pagination-container .pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 0;
+    border-radius: 4px;
+}
+
+.pagination-container .pagination > li {
+    display: inline;
+    margin-right: 5px;
+}
+
+.pagination-container .pagination > li > a,
+.pagination-container .pagination > li > span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    line-height: 1.42857143;
+    text-decoration: none;
+    color: #337ab7;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-left: -1px;
+}
+
+.pagination-container .pagination > li:first-child > a,
+.pagination-container .pagination > li:first-child > span {
+    margin-left: 0;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
+.pagination-container .pagination > li:last-child > a,
+.pagination-container .pagination > li:last-child > span {
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.pagination-container .pagination > .active > a,
+.pagination-container .pagination > .active > span,
+.pagination-container .pagination > .active > a:hover,
+.pagination-container .pagination > .active > span:hover,
+.pagination-container .pagination > .active > a:focus,
+.pagination-container .pagination > .active > span:focus {
+    z-index: 2;
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #337ab7;
+    cursor: default;
+}
+
+.pagination-container .pagination > .disabled > span,
+.pagination-container .pagination > .disabled > span:hover,
+.pagination-container .pagination > .disabled > span:focus,
+.pagination-container .pagination > .disabled > a,
+.pagination-container .pagination > .disabled > a:hover,
+.pagination-container .pagination > .disabled > a:focus {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff;
+    border-color: #ddd;
+}

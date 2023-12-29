@@ -1,0 +1,83 @@
+﻿@model IPagedList<projectdbfirst.Models.KHUserViewModel>
+@using PagedList;
+@using PagedList.Mvc;
+
+@*@model IEnumerable<projectdbfirst.Models.KHUserViewModel>*@
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Danh sách khách hàng</h2>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary"})
+    </p>*@
+<table class="table">
+    <tr>
+        <th>
+            Mã khách hàng
+        </th>
+        <th>
+            Tên đầy đủ
+        </th>
+        <th>
+            Địa chỉ
+        </th>
+        <th>
+            Điện thoại
+        </th>
+        <th>
+            Email 
+        </th>
+        <th>
+            UserName
+        </th>
+        <th>
+            PassWord
+        </th>
+        <th>
+            KHUserID
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.KHInfo.MaKH)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KHInfo.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KHInfo.DiaChi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KHInfo.DienThoai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KHInfo.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserInfo.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserInfo.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KHInfo.KHUserId)
+            </td>
+            <td>
+
+                @Html.ActionLink("Edit", "Edit", new { id = item.KHInfo.MaKH }, new { @class = "btn btn-primary" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
