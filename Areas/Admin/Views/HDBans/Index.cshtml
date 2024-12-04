@@ -9,46 +9,84 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create" , null , new { @class="btn btn-primary"})
-</p>
-<table class="table">
-    <tr>
-        <th>
-            Ngày bán
-        </th>
-        <th>
-            Tổng tiền
-        </th>
-        <th>
-            Tên khách hàng
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+@if (ViewBag.Print)
+{
+    <h2 class="text-center">Danh sách hóa đơn bán</h2>
+    @Html.ActionLink("Back", "Index", new { page = 1 }, new { @class = "btn btn-success", style = "margin-left: 8px;" })
+    <a class="btn btn-primary" style="margin-left: 8px;" href="#" onclick="window.print(); return false;">Print</a>
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayBan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TongTien)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.KH.FullName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.MaHDBan }, new { @class="btn btn-primary"}) |
-                @Html.ActionLink("Details", "Details", new { id = item.MaHDBan }, new { @class = "btn btn-success" }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.MaHDBan }, new { @class = "btn btn-danger" })
-            </td>
+            <th>
+                Ngày bán
+            </th>
+            <th>
+                Tổng tiền
+            </th>
+            <th>
+                Tên khách hàng
+            </th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayBan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TongTien)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KH.FullName)
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <h2>Index</h2>
+    @Html.ActionLink("Print list", "Index", new { page = 1, pSize = 0 }, new { @class = "btn btn-success", style = "margin-left: 8px;" })
+    <table class="table">
+        <tr>
+            <th>
+                Ngày bán
+            </th>
+            <th>
+                Tổng tiền
+            </th>
+            <th>
+                Tên khách hàng
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayBan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TongTien)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KH.FullName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.MaHDBan }, new { @class = "btn btn-primary" }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.MaHDBan }, new { @class = "btn btn-success" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.MaHDBan }, new { @class = "btn btn-danger" }) |
+                    @Html.ActionLink("CT hóa đơn", "Index", "CTHDBans", new { id = item.MaHDBan }, new { @class = "btn btn-dark" })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
 
 <div class="pagination-container">
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))

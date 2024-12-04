@@ -4,7 +4,8 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ImportChart</h2>
+<h2 class="text-center">ImportChart</h2>
+<a class="btn btn-primary mb-2" href="#" onclick="window.print(); return false;">Print</a>
 
 @using (Html.BeginForm("ImportChart", "Chart", FormMethod.Get, new { id = "chartForm" }))
 {
@@ -24,13 +25,14 @@
         }
     </select>
 
-    <button type="submit" style="color: #696cff; 
-                                border-color: #696cff; 
-                                background: transparent; 
-                                outline: none; 
-                                padding: 4px 12px; 
-                                border-radius: 17px; 
-                                margin-left: 16px; ">Search
+    <button type="submit" style="color: #696cff;
+                                border-color: #696cff;
+                                background: transparent;
+                                outline: none;
+                                padding: 4px 12px;
+                                border-radius: 17px;
+                                margin-left: 16px; ">
+        Search
     </button>
 }
 <div id="parentChart">
@@ -68,7 +70,7 @@
                         // Xóa biểu đồ cũ trước khi vẽ biểu đồ mới
                         //if (window.myBarChart != undefined)
                         //    window.myBarChart.destroy();
-                        
+
                         var myBarChart = new Chart(ctx, {
                             type: 'bar',
                             data: barChartData
@@ -87,7 +89,7 @@
             canvas.parentNode.removeChild(canvas);
 
             var newCanvas = document.createElement('canvas');
-            newCanvas.id = 'chartProduct'; 
+            newCanvas.id = 'chartProduct';
 
             var parent = document.getElementById('parentChart');
             parent.appendChild(newCanvas);

@@ -93,10 +93,43 @@
                                         <a href="@Url.Action("AddToCart","Cart", new {id = item.MaH })"> <i class="fa fa-shopping-cart"></i> Add to cart</a>
                                     </div>
                                 </div>
-                                <div class="product_content">
+                                @*<div class="product_content">
                                     <span class="product_price">@item.GiaTien,000 đ</span>
                                     <h3 class="product_title"><a href="single-product.html">@item.TenH</a></h3>
-                                </div>
+                                </div>*@
+                                @{
+                                    double r = 0;
+                                    r = (double)(item.GiaTien * ( 100 - item.GiamGia) / 100);
+                                    if (item.GiamGia > 0 )
+                                    {
+
+                                        <div class="product_content">
+                                            <del style="color: red; font-size: 16px; margin-top: 5px; display: inline-block;">@item.GiaTien.000 đ</del>
+                                            <span class="product_price">@r.000 đ</span>
+                                            <h3 class="product_title">@item.TenH</h3>
+                                        </div>
+                                        <div class="hot_img">
+                                            <img src="~/Assets/Client/img/cart/span-giamgia.png" />
+                                            <div style="
+                                                position: absolute;
+                                                top: 8px;
+                                                right: 4px;
+                                                color: white;
+                                                font-weight: 700;
+                                                font-size: 14px;
+                                            ">
+                                                -@item.GiamGia%
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="product_content">
+                                            <span class="product_price">@item.GiaTien.000 đ</span>
+                                            <h3 class="product_title">@item.TenH</h3>
+                                        </div>
+                                    }
+                                }
                                 <div class="product_info">
                                     <ul>
                                         <li><a href="@Url.Action("AddToWishlist","Wishlist", new {id = item.MaH })" title=" Add to Wishlist ">Add to Wishlist</a></li>
@@ -121,6 +154,24 @@
                                 <div class="product_thumb">
                                     <a href="@Url.Action("Details", "Home", new {id = item.MaH})"><img style="width: 270px; height: 350px;" src="@item.Anh" alt=""></a>
                                 </div>
+                                @{ 
+                                    if(item.GiamGia > 0)
+                                    {
+                                        <div class="hot_img">
+                                            <img src="~/Assets/Client/img/cart/span-giamgia.png" />
+                                            <div style="
+                                                position: absolute;
+                                                top: 8px;
+                                                right: 4px;
+                                                color: white;
+                                                font-weight: 700;
+                                                font-size: 14px;
+                                            ">
+                                                -@item.GiamGia%
+                                            </div>
+                                        </div>
+                                    }
+                                }
                             </div>
                             <div class="col-lg-9 col-md-7 col-sm-6">
                                 <div class="list_product_content">
@@ -132,9 +183,27 @@
                                         @Html.Raw(item.MoTa)
                                     </div>
 
-                                    <div class="content_price mt-3">
+                                    @*<div class="content_price mt-3">
                                         <span>@item.GiaTien,000 đ</span>
-                                    </div>
+                                    </div>*@
+                                    @{
+                                        double r = 0;
+                                        r = (double)(item.GiaTien * (100 - item.GiamGia) / 100);
+                                        if (item.GiamGia > 0)
+                                        {
+                                            <div class="content_price mt-3">
+                                                <del style="color: red; display:inline-block; margin-right: 4px;">@item.GiaTien.000 đ</del>
+                                                <span>@r.000 đ</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="content_price mt-3">
+                                                <span>@item.GiaTien.000 đ</span>
+                                            </div>
+                                        }
+                                    }
+
                                     <div class="add_links">
                                         <ul>
                                             <li><a href="@Url.Action("AddToCart","Cart", new {id = item.MaH })" title="add to cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>

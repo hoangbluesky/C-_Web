@@ -20,6 +20,10 @@ namespace projectdbfirst.Areas.Admin.Controllers
         public ActionResult Index(int? page ,int? id)
         {
             var cTHDBans = db.CTHDBans.Include(c => c.Hang).Include(c => c.HDBan).ToList();
+            if (id != 0)
+            {
+                cTHDBans = cTHDBans.Where(c => c.MaHDBan == id).ToList();
+            }
             int pageSize = 5;
             int pageNumber = (page ?? 1);
             var pageResult = cTHDBans.ToPagedList(pageNumber, pageSize);

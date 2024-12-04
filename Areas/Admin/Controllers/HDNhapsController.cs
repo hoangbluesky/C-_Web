@@ -16,8 +16,15 @@ namespace projectdbfirst.Areas.Admin.Controllers
     {
         private QLBHmvcEntities db = new QLBHmvcEntities();
 
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, int? pSize)
         {
+            ViewBag.Print = false;
+            int ps = 5;
+            if (pSize != null)
+            {
+                ps = db.HDNhaps.Count();
+                ViewBag.Print = true;
+            }
             if (TempData["SuccessMessageHDNhap"] != null)
             {
                 ViewBag.SuccessMessage = TempData["SuccessMessageHDNhap"].ToString();
@@ -27,7 +34,7 @@ namespace projectdbfirst.Areas.Admin.Controllers
                 ViewBag.ErrorMessage = TempData["ErrorMessageHDNhap"].ToString();
             }
             var lst = db.HDNhaps.Include(h => h.NCC).Include(h => h.NV).ToList();
-            int pageSize = 5;
+            int pageSize = ps;
             int pageNumber = (page ?? 1);
             var pageResult = lst.ToPagedList(pageNumber, pageSize);
             return View(pageResult);

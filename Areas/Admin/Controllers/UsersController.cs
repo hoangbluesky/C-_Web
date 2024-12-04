@@ -18,10 +18,17 @@ namespace projectdbfirst.Areas.Admin.Controllers
         private QLBHmvcEntities db = new QLBHmvcEntities();
 
         // GET: Admin/Users
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, int? pSize)
         {
+            ViewBag.Print = false;
+            int ps = 5;
+            if (pSize != null)
+            {
+                ps = db.Users.Count();
+                ViewBag.Print = true;
+            }
             var lst = db.Users.ToList();
-            int pageSize = 5;
+            int pageSize = ps;
             int pageNumber = (page ?? 1);
             IPagedList<projectdbfirst.Models.User> pageResult = lst.ToPagedList(pageNumber, pageSize);
             return View(pageResult);
@@ -104,16 +111,35 @@ namespace projectdbfirst.Areas.Admin.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,Username,Password,Role")] User user)
+        public ActionResult Edit([Bind(Include = "UserId,Username,Password,Role")] User user, string currentPassword)
         {
-            if (ModelState.IsValid)
+            var currentUser = db.Users.Find(user.UserId);
+            var roles = new List<string> { "client", "admin" };
+            ViewBag.Role = new SelectList(roles, currentUser.Role);
+
+            if (!ModelState.IsValid)
+                return View(user);
+
+            if (currentUser.Password != currentPassword)
             {
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ModelState.AddModelError("", "Mật khẩu cũ không đúng.");
+                return View(user);
             }
-            return View(user);
+
+            // Cập nhật thông tin người dùng từ dữ liệu nhập vào
+            currentUser.Username = user.Username;
+            currentUser.Role = user.Role;
+
+            // Kiểm tra nếu có mật khẩu mới được nhập thì cập nhật mật khẩu mới
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                currentUser.Password = user.Password;
+            }
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
+
 
         // GET: Admin/Users/Delete/5
         public ActionResult Delete(int? id)

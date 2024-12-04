@@ -58,6 +58,9 @@
             Giá tiền
         </th>
         <th>
+            Giảm giá
+        </th>
+        <th>
             Ảnh
         </th>
         <th>
@@ -80,6 +83,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.GiaTien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GiamGia) %
             </td>
             <td>
                 <img src="@item.Anh" alt="@item.TenH" class="card-img-top" />

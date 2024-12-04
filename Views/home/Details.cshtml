@@ -3,12 +3,48 @@
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var chatTree = ViewBag.ChatTree as List<projectdbfirst.Controllers.HomeController.ChatNode>;
 }
 <head>
     <style>
         .product_thumb a img {
             width: 252px;
             height: 326px;
+        }
+
+        .nodeUl > .chatContainer {
+            font-size: 16px;
+            padding: 10px 20px 20px 20px;
+            margin-bottom: 10px;
+        }
+
+        .chatHead {
+            display: block;
+            font-size: 16px;
+        }
+
+        .nodeChat {
+            padding: 12px 20px 12px 20px;
+            border: 1px solid black;
+            border-radius: 4px;
+            margin: 12px 4px;
+            background-color: #fff;
+        }
+
+        .btn {
+            border: 0.5px solid #000;
+            background-color: #eee;
+            color: #000;
+            border-radius: 4px;
+            font-size: 18px;
+            margin: 12px 4px 0 0;
+        }
+
+        .inputChat {
+        }
+
+        .chatTime {
+            margin-left: 30px;
         }
     </style>
 </head>
@@ -39,9 +75,24 @@
                     <div class="tab-pane fade show active" id="p_tab1" role="tabpanel">
                         <div class="modal_img">
                             <a href="#"><img src="@Html.DisplayFor(model => model.Anh)" alt=""></a>
-                            <div class="img_icone">
-                                <img src="assets\img\cart\span-new.png" alt="">
-                            </div>
+                            @{
+                                if (Model.GiamGia > 0)
+                                {
+                                    <div style="position: absolute; top: -20px; right: -20px;">
+                                        <img src="~/Assets/Client/img/cart/span-giamgia.png" alt="">
+                                    </div>
+                                    <div style="
+                                            position: absolute;
+                                            top: -14px;
+                                            right: -18px;
+                                            color: white;
+                                            font-weight: 700;
+                                            font-size: 14px;
+                                        ">
+                                        -@Model.GiamGia%
+                                    </div>
+                                }
+                            }
                             <div class="view_img">
                                 <a class="large_view" href="@Html.DisplayFor(model => model.Anh)"><i class="fa fa-search-plus"></i></a>
                             </div>
@@ -59,10 +110,25 @@
                 <div class="product_desc">
                     @Html.Raw(Model.MoTa)
                 </div>
-
-                <div class="content_price mb-15">
-                    <span>@Html.DisplayFor(model => model.GiaTien)0 đ</span>
-                </div>
+                @{
+                    double rm = (double)(Model.GiaTien * (100 - Model.GiamGia) / 100);
+                    if (Model.GiamGia > 0)
+                    {
+                        <div class="content_price mb-15">
+                            <del style="color: red; display: inline-block; margin-right: 4px;">@Html.DisplayFor(model => model.GiaTien)0 đ</del>
+                            <span>@rm.000 đ</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="content_price mb-15">
+                            <span>@Html.DisplayFor(model => model.GiaTien)0 đ</span>
+                        </div>
+                    }
+                }
+                @*<div class="content_price mb-15">
+                        <span>@Html.DisplayFor(model => model.GiaTien)0 đ</span>
+                    </div>*@
                 <div class="box_quantity mb-20">
                     <form action="#">
                         <label>quantity</label>
@@ -112,35 +178,182 @@
     </div>
     <div class="row">
         <div class="single_p_active owl-carousel">
-        @{
-            List<projectdbfirst.Models.Hang> data = (List<projectdbfirst.Models.Hang>)ViewBag.Data;
-            for (int i = 0; i < data.Count; i++)
-            {
-                <div class="col-lg-3">
-                    <div class="single_product">
-                        <div class="product_thumb">
-                            <a href="single-product.html">
-                                <img src="@data[i].Anh" alt="">
-                            </a>
-                            <div class="product_action">
-                                <a href="@Url.Action("AddToCart","Cart", new {id = data[i].MaH })"> <i class="fa fa-shopping-cart"></i> Add to cart</a>
+            @{
+                List<projectdbfirst.Models.Hang> data = (List<projectdbfirst.Models.Hang>)ViewBag.Data;
+                for (int i = 0; i < data.Count; i++)
+                {
+                    <div class="col-lg-3">
+                        <div class="single_product">
+                            <div class="product_thumb">
+                                <a href="@Url.Action("Details", "Home", new {id = data[i].MaH})">
+                                    <img src="@data[i].Anh" alt="">
+                                </a>
+                                <div class="product_action">
+                                    <a href="@Url.Action("AddToCart","Cart", new {id = data[i].MaH })"> <i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                </div>
+                            </div>
+                            @*<div class="product_content">
+                                    <span class="product_price">@data[i].GiaTien,000 đ</span>
+                                    <h3 class="product_title">@data[i].TenH</h3>
+                                </div>*@
+                            @{
+                                double r = 0;
+                                r = (double)(data[i].GiaTien * (100 - data[i].GiamGia) / 100);
+                                if (data[i].GiamGia > 0)
+                                {
+
+                                    <div class="product_content">
+                                        <del style="color: red; font-size: 16px; margin-top: 5px; display: inline-block;">@data[i].GiaTien.000 đ</del>
+                                        <span class="product_price">@r.000 đ</span>
+                                        <h3 class="product_title">@data[i].TenH</h3>
+                                    </div>
+                                    <div class="hot_img">
+                                        <img src="~/Assets/Client/img/cart/span-giamgia.png" />
+                                        <div style="
+                                        position: absolute;
+                                        top: 8px;
+                                        right: 4px;
+                                        color: white;
+                                        font-weight: 700;
+                                        font-size: 14px;
+                                    ">
+                                            -@data[i].GiamGia%
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="product_content">
+                                        <span class="product_price">@data[i].GiaTien.000 đ</span>
+                                        <h3 class="product_title">@data[i].TenH</h3>
+                                    </div>
+                                }
+                            }
+                            <div class="product_info">
+                                <ul>
+                                    <li><a href="@Url.Action("AddToWishlist","Wishlist", new {id = data[i].MaH })" title=" Add to Wishlist ">Add to Wishlist</a></li>
+                                    <li><a href="@Url.Action("Details", "Home", new {id = data[i].MaH})" title="Quick view">View Detail</a></li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="product_content">
-                            <span class="product_price">@data[i].GiaTien,000 đ</span>
-                            <h3 class="product_title">@data[i].TenH</h3>
-                        </div>
-                        <div class="product_info">
-                            <ul>
-                                <li><a href="@Url.Action("AddToWishlist","Wishlist", new {id = data[i].MaH })" title=" Add to Wishlist ">Add to Wishlist</a></li>
-                                <li><a href="@Url.Action("Details", "Home", new {id = data[i].MaH})" title="Quick view">View Detail</a></li>
-                            </ul>
-                        </div>
                     </div>
-                </div>
+                }
             }
-        }
         </div>
     </div>
 </div>
 <!--new product area start-->
+<!-- Đặt MaH vào một data attribute -->
+<div id="hangInfo" data-mah="@Model.MaH"></div>
+<div style="background-color: #FCFCFA; border-radius: 4px;">
+    <h4 style="text-align: center; padding-top: 22px;">Chats</h4>
+    <input class="inputChat" type='text' id='replyInputField--1' placeholder='Nhập phản hồi của bạn' />
+    <button class='btn' type='button' onclick='submitReply(-1)'>Gửi</button>
+    @if (chatTree != null)
+    {
+        <ul class="nodeUl">
+            @Html.Raw(RenderChatTree(chatTree))
+        </ul>
+    }
+</div>
+@section Scripts {
+    <script>
+        function showReplyInput(chatId) {
+            document.getElementById('replyInput-' + chatId).style.display = 'block';
+            // Lấy giá trị MaH từ data attribute
+            var maH = document.getElementById('hangInfo').getAttribute('data-mah');
+            console.log('MaH:', maH);
+        }
+
+        function hideReplyInput(chatId) {
+            // Lấy element input
+            var input = document.getElementById('replyInputField-' + chatId);
+            // Đặt giá trị của input thành rỗng
+            input.value = "";
+            document.getElementById('replyInput-' + chatId).style.display = 'none';
+        }
+
+        function submitReply(chatId) {
+            var input = document.getElementById('replyInputField-' + chatId);
+            var content = input.value;
+
+            if (content) {
+                var formData = new FormData();
+                formData.append('parentId', chatId);
+                formData.append('content', content);
+                var maH = document.getElementById('hangInfo').getAttribute('data-mah');
+                formData.append('maH', maH);
+
+                fetch('@Url.Action("Reply", "Home")', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload(); // Reload the page after successful submission
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error submitting reply');
+                });
+            }
+        }
+    </script>
+}
+
+@functions {
+    // Hàm đệ quy để hiển thị cây chat
+    private string RenderChatTree(List<projectdbfirst.Controllers.HomeController.ChatNode> nodes, int level = 0)
+    {
+        var html = new System.Text.StringBuilder();
+
+        foreach (var node in nodes)
+        {
+            // Tính toán khoảng thời gian
+            TimeSpan timeAgo = (TimeSpan)(DateTime.Now - node.Time);
+            string timeAgoString = FormatTimeAgo(timeAgo);
+
+            // Gán vào node
+            node.TimeAgo = timeAgoString;
+
+            html.AppendFormat("<li class='chatContainer' style='margin-left:{0}px'>", level * 30);
+            html.Append("<div class='nodeChat'>");
+            html.AppendFormat("<div class='chatHead'><strong class=''>{0}</strong><span class='chatTime'>{1}</span></div> {2}", node.TenKH, node.TimeAgo, node.Content);
+            html.AppendFormat("<br><button class='btn' type='button' onclick='showReplyInput({0})'>Phản hồi</button>", node.ChatId);
+            html.Append("</div>");
+            // Thêm phần input để phản hồi
+            html.AppendFormat(@"
+        <div id='replyInput-{0}' style='display:none; margin-left:{1}px'>
+            <input type='text' id='replyInputField-{0}' placeholder='Nhập phản hồi của bạn'/>
+            <button class='btn' type='button' onclick='submitReply({0})'>Gửi</button>
+            <button class='btn' type='button' onclick='hideReplyInput({0})'>Hủy</button>
+        </div>
+    ", node.ChatId, (level + 1) * 20);
+            if (node.Children.Any())
+            {
+                html.Append("<ul class='chats'>");
+                html.Append(RenderChatTree(node.Children, level + 1));
+                html.Append("</ul>");
+            }
+            html.Append("</li>");
+        }
+
+        return html.ToString();
+    }
+    private string FormatTimeAgo(TimeSpan timeAgo)
+    {
+        if (timeAgo.TotalSeconds < 60)
+            return "vừa xong";
+        if (timeAgo.TotalMinutes < 60)
+            return $"{(int)timeAgo.TotalMinutes} phút trước";
+        if (timeAgo.TotalHours < 24)
+            return $"{(int)timeAgo.TotalHours} giờ trước";
+        if (timeAgo.TotalDays < 30)
+            return $"{(int)timeAgo.TotalDays} ngày trước";
+        return $"{(int)(timeAgo.TotalDays / 30)} tháng trước";
+    }
+}

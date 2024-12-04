@@ -2,12 +2,51 @@
 
 @{
     ViewBag.Title = "Details";
+    var chatTree = ViewBag.ChatTree as List<projectdbfirst.Controllers.HomeController.ChatNode>;
 }
 <style>
     .card-img-top {
         width: 240px;
         height: 100px;
         object-fit: cover;
+    }
+
+    .nodeUl > .chatContainer {
+        font-size: 16px;
+        padding: 10px 20px 20px 20px;
+        margin-bottom: 10px;
+    }
+
+    .chatHead {
+        display: block;
+        font-size: 16px;
+    }
+
+    .nodeChat {
+        padding: 12px 20px 12px 20px;
+        border: 1px solid black;
+        border-radius: 4px;
+        margin: 12px 4px;
+        background-color: #fff;
+    }
+
+    .btn {
+        border: 0.5px solid #000;
+        background-color: #eee;
+        color: #000;
+        border-radius: 4px;
+        font-size: 18px;
+        margin: 12px 4px 0 0;
+    }
+
+    .inputChat {
+    }
+
+    .chatTime {
+        margin-left: 30px;
+    }
+    ul ,li {
+        list-style-type: none;
     }
 </style>
 
@@ -61,5 +100,59 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.MaH }, new { @class = "btn btn-primary" }) |
-    @Html.ActionLink("Back to List", "Index", new { id = Model.MaDanhMuc }, new { @class = "btn btn-primary"})
+    @Html.ActionLink("Back to List", "Index", new { id = Model.MaDanhMuc }, new { @class = "btn btn-primary" })
 </p>
+
+
+<div style="background-color: #FCFCFA; border-radius: 4px;">
+    <h4 style="text-align: center; padding-top: 22px;">Chats</h4>
+    @if (chatTree != null)
+    {
+        <ul class="nodeUl">
+            @Html.Raw(RenderChatTree(chatTree))
+        </ul>
+    }
+</div>
+@functions {
+    // Hàm đệ quy để hiển thị cây chat
+    private string RenderChatTree(List<projectdbfirst.Controllers.HomeController.ChatNode> nodes, int level = 0)
+    {
+        var html = new System.Text.StringBuilder();
+
+        foreach (var node in nodes)
+        {
+            // Tính toán khoảng thời gian
+            TimeSpan timeAgo = (TimeSpan)(DateTime.Now - node.Time);
+            string timeAgoString = FormatTimeAgo(timeAgo);
+
+            // Gán vào node
+            node.TimeAgo = timeAgoString;
+
+            html.AppendFormat("<li class='chatContainer' style='margin-left:{0}px'>", level * 30);
+            html.Append("<div class='nodeChat'>");
+            html.AppendFormat("<div class='chatHead'><strong class=''>{0}</strong><span class='chatTime'>{1}</span></div> {2}", node.TenKH, node.TimeAgo, node.Content);
+            html.Append("</div>");
+            if (node.Children.Any())
+            {
+                html.Append("<ul class='chats'>");
+                html.Append(RenderChatTree(node.Children, level + 1));
+                html.Append("</ul>");
+            }
+            html.Append("</li>");
+        }
+
+        return html.ToString();
+    }
+    private string FormatTimeAgo(TimeSpan timeAgo)
+    {
+        if (timeAgo.TotalSeconds < 60)
+            return "vừa xong";
+        if (timeAgo.TotalMinutes < 60)
+            return $"{(int)timeAgo.TotalMinutes} phút trước";
+        if (timeAgo.TotalHours < 24)
+            return $"{(int)timeAgo.TotalHours} giờ trước";
+        if (timeAgo.TotalDays < 30)
+            return $"{(int)timeAgo.TotalDays} ngày trước";
+        return $"{(int)(timeAgo.TotalDays / 30)} tháng trước";
+    }
+}

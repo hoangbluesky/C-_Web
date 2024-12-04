@@ -17,8 +17,15 @@ namespace projectdbfirst.Areas.Admin.Controllers
     {
         private QLBHmvcEntities db = new QLBHmvcEntities();
 
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, int? pSize)
         {
+            ViewBag.Print = false;
+            int ps = 5;
+            if (pSize != null)
+            {
+                ps = db.NVs.Count();
+                ViewBag.Print = true;
+            }
             var ketQua = (from nv in db.NVs
                           from user in db.Users
                           where nv.NVUserId == user.UserId
@@ -27,7 +34,7 @@ namespace projectdbfirst.Areas.Admin.Controllers
                               NVInfo = nv,
                               UserInfo = user
                           }).ToList();
-            int pageSize = 5;
+            int pageSize = ps;
             int pageNumber = (page ?? 1);
 
             IPagedList<NVUserViewModel> pagedResult = ketQua.ToPagedList(pageNumber, pageSize);

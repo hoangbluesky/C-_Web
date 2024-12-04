@@ -1,33 +1,11 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "BuyProduct";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
-{
-    <div class="alert alert-success alert-dismissible">
-        @ViewBag.SuccessMessage
-        <button type="button" class="close btn-close" data-dismiss="alert" aria-label="Close">
-        </button>
-    </div>
-}
-@if (!string.IsNullOrEmpty(ViewBag.ErrorMessageBuy))
-{
-    <div class="alert alert-danger alert-dismissible">
-        @ViewBag.ErrorMessageBuy
-        <button type="button" class="close btn-close" data-dismiss="alert" aria-label="Close">
-        </button>
-    </div>
-}
-@if (!string.IsNullOrEmpty(ViewBag.SessionNull))
-{
-    <div class="alert alert-danger alert-dismissible">
-        @ViewBag.SessionNull
-        <button type="button" class="close btn-close" data-dismiss="alert" aria-label="Close">
-        </button>
-    </div>
-}
-<!--breadcrumbs area start-->
+
+<h2>Đơn hàng</h2>
+
 <div class="breadcrumbs_area">
     <div class="row">
         <div class="col-12">
@@ -35,7 +13,7 @@
                 <ul>
                     <li><a href="@Url.Action("Index", "Home")">home</a></li>
                     <li><i class="fa fa-angle-right"></i></li>
-                    <li>Shopping Cart</li>
+                    <li>Thanh toán</li>
                 </ul>
 
             </div>
@@ -53,9 +31,8 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th class="product_remove">Delete</th>
                                     <th class="product_thumb">Image</th>
-                                    <th class="product_name" style="min-width: 200px;">Product</th>
+                                    <th class="product_name">Product</th>
                                     <th class="product-price">Price (nghìn)</th>
                                     <th class="product-discount">discount</th>
                                     <th class="product_quantity">Quantity</th>
@@ -70,17 +47,14 @@
                                         for (int i = 0; i < lstCart.Count; i++)
                                         {
                                             <tr>
-                                                <td class="product_remove">
-                                                    <a href="#" class="delete-product" data-product-id="@lstCart[i].ProductID"><i class="fa fa-trash-o"></i></a>
-                                                </td>
                                                 <td class="product_thumb"><a href="#"><img src="@lstCart[i].ProductDetail.Anh" alt=""></a></td>
                                                 <td class="product_name">
                                                     <a href="@Url.Action("Details","Home", new {id = lstCart[i].ProductDetail.MaH })">@lstCart[i].ProductDetail.TenH</a>
                                                 </td>
                                                 <td class="product-price" id="GiaTien">@lstCart[i].ProductDetail.GiaTien</td>
                                                 <td class="product-discount" id="GiaTien" style="color: red;">-@lstCart[i].ProductDetail.GiamGia%</td>
-                                                <td class="product_quantity">
-                                                    <input min="0" max="@lstCart[i].ProductDetail.SoLuong" value="@lstCart[i].Quantity" type="number" id="quantity">
+                                                <td class="product_quantity" id="quantity">
+                                                    @lstCart[i].Quantity
                                                 </td>
                                                 <td class="product_total" id="amount">@lstCart[i].Amount</td>
 
@@ -94,9 +68,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="cart_submit">
-                        <button type="submit">update cart</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -104,12 +75,7 @@
         <div class="coupon_area">
             <div class="row">
                 <div class="col-lg-6 col-md-6">
-                    <div class="coupon_code">
-                        <h3>Delete All Product</h3>
-                        <div class="checkout_btn" style="display: flex; justify-content: center; align-items: center; padding: 40px 0 41px 0;">
-                            <a href="@Url.Action("DeleteAll","Cart")">Delete All</a>
-                        </div>
-                    </div>
+                   
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="coupon_code">
@@ -135,7 +101,7 @@
 
 
                             <div class="checkout_btn">
-                                <a href="@Url.Action("BuyProduct","Cart")">Proceed to Checkout</a>
+                                <a href="@Url.Action("Onepay","Cart")">Thanh toán</a>
                             </div>
                         </div>
                     </div>
@@ -145,35 +111,3 @@
         <!--coupon code area end-->
     </form>
 </div>
-<!--shopping cart area end -->
-@section Scripts {
-    <script>
-        document.getElementById('quantity').addEventListener('input', function () {
-            calculateTotal();
-        });
-        function calculateTotal() {
-            var soLuong = parseFloat(document.getElementById('quantity').value) || 0;
-            var donGia = parseFloat(document.getElementById('GiaTien').textContent) || 0;
-            var thanhTien = soLuong * donGia;
-
-            // Hiển thị giá trị tính được lên ô input ThanhTien
-            document.getElementById('amount').textContent = thanhTien; //toFixed(2) để hiển thị hai chữ số sau dấu thập phân
-        }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.delete-product').click(function (e) {
-                e.preventDefault(); // Ngăn chặn hành động mặc định của thẻ a
-
-                var productId = $(this).data('product-id');
-                var form = $('<form action="/Cart/DeleteProduct" method="post">' +
-                    '<input type="hidden" name="productId" value="' + productId + '" />' +
-                    '</form>');
-                $('body').append(form);
-                form.submit();
-            });
-        });
-    </script>
-}
-

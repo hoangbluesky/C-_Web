@@ -8,7 +8,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Danh sách hóa đơn nhập</h2>
+
 @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
 {
     <div class="alert alert-success alert-dismissible">
@@ -25,57 +25,110 @@
         </button>
     </div>
 }
-<p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
-</p>
-<table class="table">
-    <tr>
-        <th>
-            Mã hóa đơn nhập
-        </th>
-        <th>
-            Ngày nhập
-        </th>
-        <th>
-            Tổng tiền
-        </th>
-        <th>
-            Tên Nhà cung cấp
-        </th>
-        <th>
-            Tên nhân viên
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
+
+@if (ViewBag.Print)
+{
+    <h2 class="text-center">Danh sách hóa đơn nhập</h2>
+    @Html.ActionLink("Back", "Index", new { page = 1 }, new { @class = "btn btn-success", style = "margin-left: 8px;" })
+    <a class="btn btn-primary" style="margin-left: 8px;" href="#" onclick="window.print(); return false;">Print</a>
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaHDNhap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayNhap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TongTien)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NCC.TenNCC)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NV.TenNV)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.MaHDNhap }, new { @class = "btn btn-primary" }) |
-                @Html.ActionLink("Details", "Details", new { id = item.MaHDNhap }, new { @class = "btn btn-success" }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.MaHDNhap }, new { @class = "btn btn-danger" }) |
-                @Html.ActionLink("CT hóa đơn", "Index", "CTHDNhaps", new { id = item.MaHDNhap }, new { @class = "btn btn-dark" })
-            </td>
+            <th>
+                Mã hóa đơn nhập
+            </th>
+            <th>
+                Ngày nhập
+            </th>
+            <th>
+                Tổng tiền
+            </th>
+            <th>
+                Tên Nhà cung cấp
+            </th>
+            <th>
+                Tên nhân viên
+            </th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaHDNhap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayNhap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TongTien)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NCC.TenNCC)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NV.TenNV)
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <h2>Danh sách hóa đơn nhập</h2>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Print list", "Index", new { page = 1, pSize = 0 }, new { @class = "btn btn-success", style = "margin-left: 8px" })
+    <table class="table">
+        <tr>
+            <th>
+                Mã hóa đơn nhập
+            </th>
+            <th>
+                Ngày nhập
+            </th>
+            <th>
+                Tổng tiền
+            </th>
+            <th>
+                Tên Nhà cung cấp
+            </th>
+            <th>
+                Tên nhân viên
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaHDNhap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayNhap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TongTien)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NCC.TenNCC)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NV.TenNV)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.MaHDNhap }, new { @class = "btn btn-primary" }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.MaHDNhap }, new { @class = "btn btn-success" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.MaHDNhap }, new { @class = "btn btn-danger" }) |
+                    @Html.ActionLink("CT hóa đơn", "Index", "CTHDNhaps", new { page = 1, id = item.MaHDNhap }, new { @class = "btn btn-dark" })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
 
 <div class="pagination-container">
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))

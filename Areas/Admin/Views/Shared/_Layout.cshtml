@@ -51,7 +51,7 @@
 
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo">
-                    <a href="@Url.Action("Index","DanhMucs")" class="app-brand-link">
+                    <a href="@Url.Action("Index","Home")" class="app-brand-link">
                         <span class="app-brand-logo demo">
                             <svg width="25"
                                  viewBox="0 0 25 42"
@@ -332,6 +332,13 @@
                                 </a>
                             </li>
                         </ul>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="@Url.Action("Index", "Home", new { area = "" })" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-arrow-back"></i>
+                            <div data-i18n="Boxicons">View</div>
+                        </a>
                     </li>
 
                     <li class="menu-item">

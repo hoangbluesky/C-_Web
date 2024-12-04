@@ -19,11 +19,18 @@ namespace projectdbfirst.Areas.Admin.Controllers
         private QLBHmvcEntities db = new QLBHmvcEntities();
 
         // GET: Admin/HDBans
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, int? pSize)
         {
+            ViewBag.Print = false;
+            int ps = 5;
+            if (pSize != null)
+            {
+                ps = db.HDBans.Count();
+                ViewBag.Print = true;
+            }
             var lst = db.HDBans.Include(h => h.KH).ToList();
 
-            int pageSize = 5;
+            int pageSize = ps;
             int pageNumber = (page ?? 1);
             var pageResult = lst.ToPagedList(pageNumber, pageSize);
 

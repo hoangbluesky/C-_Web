@@ -24,5 +24,8 @@ namespace projectdbfirst.Models.MetaData
         [DataType(DataType.Currency)]
         [DisplayName("Giá tiền")]
         public Nullable<double> GiaTien { get; set; }
+        [DisplayName("Giảm giá")]
+        [Range(0, 100, ErrorMessage = "Giảm giá phải nằm trong khoảng từ 0 đến 50")]
+        public Nullable<int> GiamGia { get; set; }
     }
 }

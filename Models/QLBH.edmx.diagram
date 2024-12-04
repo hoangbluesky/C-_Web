@@ -24,6 +24,7 @@
         <AssociationConnector Association="QLBHmvcModel.FK_HDBan_KH" ManuallyRouted="false" />
         <AssociationConnector Association="QLBHmvcModel.FK_HDNhap_NCC" ManuallyRouted="false" />
         <AssociationConnector Association="QLBHmvcModel.FK_HDNhap_NV" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="QLBHmvcModel.Chat" Width="1.5" PointX="9.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

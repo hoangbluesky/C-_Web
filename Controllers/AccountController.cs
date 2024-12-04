@@ -25,7 +25,7 @@ namespace projectdbfirst.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Login(User userLogin, string ReturnUrl)
         {
             if (ModelState.IsValid)
@@ -42,7 +42,8 @@ namespace projectdbfirst.Controllers
                         FormsAuthentication.SetAuthCookie(check.Username, false);
                         // Gán quyền truy cập vào mảng roles nếu cần thiết
                         //string[] roles = { "admin" };
-                        return RedirectToAction("Index", "DanhMucs", new { area = "Admin" });
+                        Session["AdminId"] = check.UserId;
+                        return RedirectToAction("Index", "Home", new { area = "Admin" });
                     }
                     else if (userRole == "client")
                     {
@@ -84,6 +85,8 @@ namespace projectdbfirst.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
+            Session.Clear();
+            Session.Abandon();
             return RedirectToAction("Login");
         }
 
@@ -98,8 +101,9 @@ namespace projectdbfirst.Controllers
         {
             if (ModelState.IsValid)
             {
-                var check = db.Users.Any(m => m.Username == user.UserInfo.Username);
-                if ( !check )
+                var check1 = db.Users.Any(m => m.Username == user.UserInfo.Username);
+                var check2 = db.KHs.Any(m => m.Email == user.KHInfo.Email);
+                if ( !check1 && !check2 )
                 {
                     projectdbfirst.Models.User uta = new projectdbfirst.Models.User();
                     projectdbfirst.Models.KH khta = new projectdbfirst.Models.KH();
@@ -126,11 +130,29 @@ namespace projectdbfirst.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng.");
+                    ModelState.AddModelError("", "Tên đăng nhập, mật khẩu không đúng hoặc email đã tồn tại.");
                 }
             }
 
             return View("Register");
+        }
+
+        [HttpGet]
+        public ActionResult ForgotPass()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ForgotPass(string Email)
+        {
+            var check = db.KHs.FirstOrDefault(m => m.Email == Email);
+            if (check == null)
+                return View();
+            else
+            {
+                // chưa biết
+            }
+            return View();
         }
     }
 }

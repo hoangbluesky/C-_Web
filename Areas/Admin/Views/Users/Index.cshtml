@@ -9,46 +9,90 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
-</p>
-<table class="table">
-    <tr>
-        <th>
-            UserName
-        </th>
-        <th>
-            PassWord
-        </th>
-        <th>
-            Role
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+@if (ViewBag.Print)
+{
+    DateTime currentDate = DateTime.Now;
+    <h2 class="text-center">Danh sách user</h2>
+    <div class="d-flex justify-content-between">
+        <div>
+            @Html.ActionLink("Back", "Index", new { page = 1 }, new { @class = "btn btn-success", style = "margin-left: 8px;" })
+            <a class="btn btn-primary" style="margin-left: 8px;" href="#" onclick="window.print(); return false;">Print</a>
+        </div>
+        <div class="d-inline-block">Được tạo vào: @currentDate.ToString("dd/MM/yyyy")</div>
+    </div>
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Role)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.UserId }, new { @class = "btn btn-primary" }) |
-                @Html.ActionLink("Details", "Details", new { id = item.UserId }, new { @class = "btn btn-success" }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.UserId }, new { @class = "btn btn-danger" })
-            </td>
+            <th>
+                UserName
+            </th>
+            <th>
+                PassWord
+            </th>
+            <th>
+                Role
+            </th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    ********
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role)
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <h2>Index</h2>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Print list", "Index", new { page = 1, pSize = 0 }, new { @class = "btn btn-success", style = "margin-left: 8px;" })
+    <table class="table">
+        <tr>
+            <th>
+                UserName
+            </th>
+            <th>
+                PassWord
+            </th>
+            <th>
+                Role
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    ********
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.UserId }, new { @class = "btn btn-primary" }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.UserId }, new { @class = "btn btn-success" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.UserId }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
 <div class="pagination-container">
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 </div>

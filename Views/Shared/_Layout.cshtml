@@ -36,7 +36,7 @@
                         <div class="row align-items-center">
                             <div class="col-lg-6 col-md-6">
                                 <div class="switcher">
-                                    
+
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6">
@@ -67,7 +67,7 @@
                                 <div class="header_right_info">
                                     <div class="search_bar">
                                         <form action="/Home/Shop" method="post">
-                                            <input placeholder="Search..." type="text" id="search" name="search"> 
+                                            <input placeholder="Search..." type="text" id="search" name="search">
                                             <button type="submit"><i class="fa fa-search"></i></button>
                                         </form>
                                     </div>
@@ -95,7 +95,7 @@
                                                                 <span class="quantity">Qty: @lstCart[i].ProductDetail.SoLuong</span>
                                                             </div>
                                                             <div class="cart_remove">
-                                                                <a title="Remove this item"  href="#" class="delete-product" data-product-id="@lstCart[i].ProductID">
+                                                                <a title="Remove this item" href="#" class="delete-product" data-product-id="@lstCart[i].ProductID">
                                                                     <i class="fa fa-times-circle"></i>
                                                                 </a>
                                                             </div>
@@ -274,6 +274,11 @@
         });
     </script>
     @RenderSection("Scripts", required: false)
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger intent="WELCOME"
+                  chat-title="Test-AI-Chat"
+                  agent-id="63c6ddd9-06cf-4c5b-9900-0258cb2f17c1"
+                  language-code="en"></df-messenger>
 </body>
 </html>
 

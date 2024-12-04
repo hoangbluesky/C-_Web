@@ -1,0 +1,132 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    /* Định dạng div cha chứa form */
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100vh; /* Chiều cao 100% màn hình */
+        background-color: #f0f0f0; /* Màu nền nhạt */
+    }
+
+    /* Định dạng form */
+    form {
+        background-color: white; /* Màu nền trắng */
+        padding: 20px; /* Padding để tạo khoảng cách bên trong form */
+        border-radius: 8px; /* Bo tròn góc */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng cho form */
+        width: 400px; /* Chiều rộng cố định của form */
+    }
+
+    /* Định dạng các phần tử bên trong form */
+    form div {
+        margin-bottom: 10px; /* Khoảng cách giữa các phần tử */
+    }
+
+    /* Định dạng các nhãn */
+    label {
+        display: block; /* Đặt nhãn trên dòng riêng */
+        font-weight: bold; /* In đậm nhãn */
+        margin-bottom: 5px; /* Khoảng cách dưới nhãn */
+    }
+
+    /* Định dạng nút submit */
+    button {
+        background-color: #007bff; /* Màu nền xanh */
+        color: white; /* Màu chữ trắng */
+        padding: 10px 15px; /* Padding cho nút */
+        border: none; /* Không có đường viền */
+        border-radius: 5px; /* Bo tròn góc */
+        cursor: pointer; /* Con trỏ thành hình tay khi di chuột qua */
+        font-weight: bold; /* Chữ in đậm */
+    }
+
+        button:hover {
+            background-color: #0056b3; /* Màu nền xanh đậm hơn khi di chuột qua */
+        }
+
+    /* Định dạng input radio */
+    input[type="radio"] {
+        margin-right: 10px; /* Khoảng cách phải */
+    }
+
+</style>
+<div class="container">
+    <div class="form-group">
+        <label class="control-label col-md-2" style="font-size:15px">Hình thức thanh toán</label>
+        <div class="col-md-10">
+            @*<select class="form-control" name="HINHTHUCTHANHTOAN" id="drTypePayment">
+                    <option value="false" selected>COD</option>
+                    <option value="true">Chuyển khoản</option>
+                </select>*@
+            <h2>Hình thức thanh toán</h2>
+            <div>Chuyển khoản</div>
+        </div>
+    </div>
+    <div class="form-group" id="load_form_payment" style="display:block;">
+        <h4> <label>Chọn phương thức thanh toán:</label><br /></h4>
+        <h5>Cách 1: Chuyển hướng sang VNPAY chọn phương thức thanh toán</h5>
+        <label><input type="radio" name="TypePaymentVN" value="0" checked /> Cổng thanh toán VNPAYQR </label>
+        <h5>Cách 2: Tách phương thức thanh toán tại site của Merchant</h5>
+        <label><input type="radio" name="TypePaymentVN" value="1" /> Thanh toán qua ứng dụng hỗ trợ VNPAYQR </label><br />
+        <label><input type="radio" name="TypePaymentVN" value="2" /> ATM-Tài khoản ngân hàng nội địa </label><br />
+        <label><input type="radio" name="TypePaymentVN" value="3" /> Thanh toán qua thẻ quốc tế </label><br />
+    </div>
+
+    <form action="/Cart/Twopay" method="post" onsubmit="return validatePaymentMethod()">
+        <input type="hidden" id="selectedPaymentMethod" name="TypePaymentVN" value="0" />
+        @{
+            // tổng tiền
+            double total = 0;
+            List<projectdbfirst.Models.CartModel> lst = (List<projectdbfirst.Models.CartModel>)Session["Cart"];
+            for (int i = 0; i < lst.Count; i++)
+            {
+                total += lst[i].Amount;
+            }
+            total = total * 1000;
+        }
+        <div>
+            Tổng tiền: @total
+        </div>
+        <div>
+            Khách hàng: @ViewBag.FullName
+        </div>
+        <div>
+            Địa chỉ: @ViewBag.DiaChi
+        </div>
+        <button type="submit">Thanh toán</button>
+    </form>
+</div>
+
+
+<script>
+    function validatePaymentMethod() {
+        // Lấy tất cả các radio button với tên "TypePaymentVN"
+        var radios = document.getElementsByName("TypePaymentVN");
+        var selectedValue = null;
+
+        // Kiểm tra radio button nào được chọn
+        for (var i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                selectedValue = radios[i].value;
+                break;
+            }
+        }
+
+        // Nếu không có radio button nào được chọn, thông báo lỗi
+        if (selectedValue === null) {
+            alert("Vui lòng chọn phương thức thanh toán.");
+            return false; // Ngăn chặn việc gửi form
+        }
+
+        // Cập nhật giá trị của trường ẩn với giá trị đã chọn
+        document.getElementById("selectedPaymentMethod").value = selectedValue;
+
+        // Nếu có giá trị đã chọn, cho phép gửi form
+        return true;
+    }
+</script>

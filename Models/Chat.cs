@@ -12,16 +12,13 @@ namespace projectdbfirst.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CTHDBan
+    public partial class Chat
     {
-        public int MaHDBan { get; set; }
-        public int MaH { get; set; }
-        public Nullable<int> SoLuong { get; set; }
-        public Nullable<double> DonGia { get; set; }
-        public Nullable<double> ThanhTien { get; set; }
-        public Nullable<int> GiamGia { get; set; }
-    
-        public virtual Hang Hang { get; set; }
-        public virtual HDBan HDBan { get; set; }
+        public int ChatId { get; set; }
+        public Nullable<int> MaKH { get; set; }
+        public Nullable<int> MaH { get; set; }
+        public Nullable<int> ParentChatId { get; set; }
+        public string Content { get; set; }
+        public Nullable<System.DateTime> Time { get; set; }
     }
 }

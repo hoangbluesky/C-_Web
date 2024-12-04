@@ -13,8 +13,26 @@
             width: 370px;
             height: 195px;
         }
+        .b_Admin {
+            position: absolute;
+            left: 20px;
+            bottom: 30px;
+            width: 54px;
+            height: 54px;
+            background-color: #FE6E42;
+            border-radius: 50%;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
     </style>
 </head>
+@if (ViewBag.checkAdmin)
+{
+    <a href="@Url.Action("Index", "Home", new { area = "Admin" })" class="b_Admin" title="Back to admin">Back</a>
+}
 <div class="row">
     @*banner slider start*@
     <div class="col-12">
@@ -61,6 +79,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="single_p_active owl-carousel">
             @{
@@ -87,10 +106,44 @@
                                     <a href="@Url.Action("AddToCart","Cart", new {id = data[i].MaH })"> <i class="fa fa-shopping-cart"></i> Add to cart</a>
                                 </div>
                             </div>
-                            <div class="product_content">
+                            @*<div class="product_content">
                                 <span class="product_price">@data[i].GiaTien,000 đ</span>
                                 <h3 class="product_title">@data[i].TenH</h3>
-                            </div>
+                            </div>*@
+                            
+                            @{
+                                double r = 0;
+                                r = (double)(data[i].GiaTien * ( 100 - data[i].GiamGia) / 100);
+                                if (data[i].GiamGia > 0 )
+                                {
+
+                                    <div class="product_content">
+                                        <del style="color: red; font-size: 16px; margin-top: 5px; display: inline-block;">@data[i].GiaTien.000 đ</del>
+                                        <span class="product_price">@r.000 đ</span>
+                                        <h3 class="product_title">@data[i].TenH</h3>
+                                    </div>
+                                    <div class="hot_img">
+                                        <img src="~/Assets/Client/img/cart/span-giamgia.png" />
+                                        <div style="
+                                            position: absolute;
+                                            top: 8px;
+                                            right: 4px;
+                                            color: white;
+                                            font-weight: 700;
+                                            font-size: 14px;
+                                        ">
+                                            -@data[i].GiamGia%
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="product_content">
+                                        <span class="product_price">@data[i].GiaTien.000 đ</span>
+                                        <h3 class="product_title">@data[i].TenH</h3>
+                                    </div>
+                                }
+                            }
                             <div class="product_info">
                                 <ul>
                                     <li><a href="@Url.Action("AddToWishlist","Wishlist", new {id = data[i].MaH })" title=" Add to Wishlist ">Add to Wishlist</a></li>
@@ -133,6 +186,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="single_p_active owl-carousel">
             @{
@@ -146,15 +200,48 @@
                     <div class="col-lg-3">
                         <div class="single_product">
                             <div class="product_thumb">
-                                <a href="single-product.html"><img src="@data[i].Anh" alt=""></a>
+                                <a href="@Url.Action("Details", "Home", new {id = data[i].MaH})"><img src="@data[i].Anh" alt=""></a>
                                 <div class="product_action">
                                     <a href="@Url.Action("AddToCart","Cart", new {id = data[i].MaH })"> <i class="fa fa-shopping-cart"></i> Add to cart</a>
                                 </div>
                             </div>
-                            <div class="product_content">
+                            @*<div class="product_content">
                                 <span class="product_price">@data[i].GiaTien,000 đ</span>
                                 <h3 class="product_title">@data[i].TenH</h3>
-                            </div>
+                            </div>*@
+                            @{
+                                double r = 0;
+                                r = (double)(data[i].GiaTien * ( 100 - data[i].GiamGia) / 100);
+                                if (data[i].GiamGia > 0 )
+                                {
+
+                                    <div class="product_content">
+                                        <del style="color: red; font-size: 16px; margin-top: 5px; display: inline-block;">@data[i].GiaTien.000 đ</del>
+                                        <span class="product_price">@r.000 đ</span>
+                                        <h3 class="product_title">@data[i].TenH</h3>
+                                    </div>
+                                    <div class="hot_img">
+                                        <img src="~/Assets/Client/img/cart/span-giamgia.png" />
+                                        <div style="
+                                            position: absolute;
+                                            top: 8px;
+                                            right: 4px;
+                                            color: white;
+                                            font-weight: 700;
+                                            font-size: 14px;
+                                        ">
+                                            -@data[i].GiamGia%
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="product_content">
+                                        <span class="product_price">@data[i].GiaTien.000 đ</span>
+                                        <h3 class="product_title">@data[i].TenH</h3>
+                                    </div>
+                                }
+                            }
                             <div class="product_info">
                                 <ul>
                                     <li><a href="@Url.Action("AddToWishlist","Wishlist", new {id = data[i].MaH })" title=" Add to Wishlist ">Add to Wishlist</a></li>
@@ -173,43 +260,5 @@
 @*blog area start*@
 
 @*brand logo strat*@
-<div class="brand_logo brand_two">
-    <div class="block_title">
-        <h3>Brands</h3>
-    </div>
-    <div class="row">
-        <div class="brand_active owl-carousel">
-            <div class="col-lg-2">
-                <div class="single_brand">
-                    <a href="#"><img src="~/Assets/Client/img/brand/brand1.jpg" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="single_brand">
-                    <a href="#"><img src="~/Assets/Client/img/brand/brand2.jpg" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="single_brand">
-                    <a href="#"><img src="~/Assets/Client/img/brand/brand3.jpg" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="single_brand">
-                    <a href="#"><img src="~/Assets/Client/img/brand/brand4.jpg" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="single_brand">
-                    <a href="#"><img src="~/Assets/Client/img/brand/brand5.jpg" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="single_brand">
-                    <a href="#"><img src="~/Assets/Client/img/brand/brand6.jpg" alt=""></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 @*brand logo end*@

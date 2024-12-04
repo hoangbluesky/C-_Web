@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="QLBHmvcModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Chat">
+          <Key>
+            <PropertyRef Name="ChatId" />
+          </Key>
+          <Property Name="ChatId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaKH" Type="int" />
+          <Property Name="MaH" Type="int" />
+          <Property Name="ParentChatId" Type="int" />
+          <Property Name="Content" Type="nvarchar(max)" />
+          <Property Name="Time" Type="datetime" />
+        </EntityType>
         <EntityType Name="CTHDBan">
           <Key>
             <PropertyRef Name="MaHDBan" />
@@ -15,6 +26,7 @@
           <Property Name="SoLuong" Type="int" />
           <Property Name="DonGia" Type="float" />
           <Property Name="ThanhTien" Type="float" />
+          <Property Name="GiamGia" Type="int" />
         </EntityType>
         <EntityType Name="CTHDNhap">
           <Key>
@@ -45,6 +57,7 @@
           <Property Name="Anh" Type="nvarchar" MaxLength="150" />
           <Property Name="MaDanhMuc" Type="int" />
           <Property Name="GiaTien" Type="float" />
+          <Property Name="GiamGia" Type="int" />
         </EntityType>
         <EntityType Name="HDBan">
           <Key>
@@ -213,6 +226,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="QLBHmvcModelStoreContainer">
+          <EntitySet Name="Chat" EntityType="Self.Chat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CTHDBan" EntityType="Self.CTHDBan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CTHDNhap" EntityType="Self.CTHDNhap" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DanhMuc" EntityType="Self.DanhMuc" Schema="dbo" store:Type="Tables" />
@@ -273,6 +287,7 @@
           <Property Name="ThanhTien" Type="Double" />
           <NavigationProperty Name="Hang" Relationship="Self.FK_CTHDBan_Hang" FromRole="CTHDBan" ToRole="Hang" />
           <NavigationProperty Name="HDBan" Relationship="Self.FK_CTHDBan_HDBan" FromRole="CTHDBan" ToRole="HDBan" />
+          <Property Name="GiamGia" Type="Int32" />
         </EntityType>
         <EntityType Name="CTHDNhap">
           <Key>
@@ -309,6 +324,7 @@
           <NavigationProperty Name="CTHDBans" Relationship="Self.FK_CTHDBan_Hang" FromRole="Hang" ToRole="CTHDBan" />
           <NavigationProperty Name="CTHDNhaps" Relationship="Self.FK_CTHDNhap_Hang" FromRole="Hang" ToRole="CTHDNhap" />
           <NavigationProperty Name="DanhMuc" Relationship="Self.FK_Hang_DanhMuc" FromRole="Hang" ToRole="DanhMuc" />
+          <Property Name="GiamGia" Type="Int32" />
         </EntityType>
         <EntityType Name="HDBan">
           <Key>
@@ -528,7 +544,19 @@
             <End Role="NV" EntitySet="NVs" />
             <End Role="HDNhap" EntitySet="HDNhaps" />
           </AssociationSet>
+          <EntitySet Name="Chats" EntityType="QLBHmvcModel.Chat" />
         </EntityContainer>
+        <EntityType Name="Chat">
+          <Key>
+            <PropertyRef Name="ChatId" />
+          </Key>
+          <Property Name="ChatId" Type="Int32" Nullable="false" />
+          <Property Name="MaKH" Type="Int32" />
+          <Property Name="MaH" Type="Int32" />
+          <Property Name="ParentChatId" Type="Int32" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Time" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -538,6 +566,7 @@
           <EntitySetMapping Name="CTHDBans">
             <EntityTypeMapping TypeName="QLBHmvcModel.CTHDBan">
               <MappingFragment StoreEntitySet="CTHDBan">
+                <ScalarProperty Name="GiamGia" ColumnName="GiamGia" />
                 <ScalarProperty Name="MaHDBan" ColumnName="MaHDBan" />
                 <ScalarProperty Name="MaH" ColumnName="MaH" />
                 <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
@@ -568,6 +597,7 @@
           <EntitySetMapping Name="Hangs">
             <EntityTypeMapping TypeName="QLBHmvcModel.Hang">
               <MappingFragment StoreEntitySet="Hang">
+                <ScalarProperty Name="GiamGia" ColumnName="GiamGia" />
                 <ScalarProperty Name="MaH" ColumnName="MaH" />
                 <ScalarProperty Name="TenH" ColumnName="TenH" />
                 <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
@@ -652,6 +682,18 @@
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Chats">
+            <EntityTypeMapping TypeName="QLBHmvcModel.Chat">
+              <MappingFragment StoreEntitySet="Chat">
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="ParentChatId" ColumnName="ParentChatId" />
+                <ScalarProperty Name="MaH" ColumnName="MaH" />
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="ChatId" ColumnName="ChatId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using projectdbfirst.Models;
 using PagedList;
+using System.Text.RegularExpressions;
+using static projectdbfirst.Controllers.HomeController;
 
 namespace projectdbfirst.Areas.Admin.Controllers
 {
@@ -47,6 +49,9 @@ namespace projectdbfirst.Areas.Admin.Controllers
             var hangs = All.ToList();
             if (!string.IsNullOrEmpty(search))
             {
+                search = RemoveSpecialCharacters(search);
+
+                // Lọc danh sách theo chuỗi search đã được làm sạch
                 hangs = hangs.Where(m => m.TenH.Contains(search)).ToList();
             }
             int pageSize = 5;
@@ -54,6 +59,16 @@ namespace projectdbfirst.Areas.Admin.Controllers
             IPagedList<Hang> pageHang = hangs.ToPagedList(pageNumber, pageSize);
             ViewBag.DanhMucHienTai = Id;
             return View(pageHang);
+        }
+
+        public string RemoveSpecialCharacters(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            // Loại bỏ ký tự đặc biệt (chỉ giữ lại chữ cái, chữ số và khoảng trắng)
+            string pattern = @"[^a-zA-Z0-9\s]";
+            return Regex.Replace(input, pattern, string.Empty);
         }
 
         public ActionResult Details(int? id)
@@ -67,6 +82,12 @@ namespace projectdbfirst.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+
+            var chats = db.Chats.Where(c => c.MaH == id).ToList();
+            var chatTree = BuildChatTree(chats);
+
+            ViewBag.ChatTree = chatTree;
+
             return View(hang);
         }
 
@@ -193,6 +214,67 @@ namespace projectdbfirst.Areas.Admin.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+
+        private List<ChatNode> BuildChatTree(List<Chat> chats)
+        {
+            var chatDict = new Dictionary<int, ChatNode>();
+            var rootChats = new List<ChatNode>();
+
+            // Tạo các đối tượng ChatNode và thêm vào từ điển
+            foreach (var chat in chats)
+            {
+                var kh = db.KHs.FirstOrDefault(k => k.MaKH == chat.MaKH);
+                var node = new ChatNode
+                {
+                    ChatId = chat.ChatId,
+                    TenKH = kh?.FullName,
+                    MaH = chat.MaH,
+                    ParentChatId = chat.ParentChatId,
+                    Content = chat.Content,
+                    Time = chat.Time,
+                    Children = new List<ChatNode>()
+                };
+                chatDict[chat.ChatId] = node;
+
+                // Nếu ParentChatId là -1, thêm vào danh sách gốc
+                if (chat.ParentChatId == -1)
+                {
+                    rootChats.Add(node);
+                }
+            }
+
+            // Gắn các node con vào node cha
+            foreach (var chat in chats)
+            {
+                if (chat.ParentChatId != -1)
+                {
+                    var parentId = chat.ParentChatId;
+                    if (parentId.HasValue && chatDict.ContainsKey(parentId.Value))
+                    {
+                        chatDict[parentId.Value].Children.Add(chatDict[chat.ChatId]);
+                    }
+                }
+            }
+
+            // Hàm sắp xếp đệ quy cho cây chat
+            void SortChatNodes(List<ChatNode> nodes)
+            {
+                nodes.Sort((x, y) => y.Time.GetValueOrDefault().CompareTo(x.Time.GetValueOrDefault()));
+                foreach (var node in nodes)
+                {
+                    if (node.Children.Any())
+                    {
+                        SortChatNodes(node.Children);
+                    }
+                }
+            }
+
+            // Sắp xếp danh sách rootChats và các node con
+            SortChatNodes(rootChats);
+
+            return rootChats;
         }
     }
 }

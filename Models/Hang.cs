@@ -28,6 +28,7 @@ namespace projectdbfirst.Models
         public string Anh { get; set; }
         public Nullable<int> MaDanhMuc { get; set; }
         public Nullable<double> GiaTien { get; set; }
+        public Nullable<int> GiamGia { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CTHDBan> CTHDBans { get; set; }

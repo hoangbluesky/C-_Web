@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace projectdbfirst.Areas.Admin.Controllers
 {
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     public class ChartController : Controller
     {
         private QLBHmvcEntities db = new QLBHmvcEntities();

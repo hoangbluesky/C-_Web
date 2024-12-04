@@ -8,81 +8,153 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Danh sách thông tin nhân viên</h2>
 
+@if (ViewBag.Print)
+{
+    <h2 class="text-center">Danh sách nhân nhân viên - admin</h2>
+    @Html.ActionLink("Back", "Index", new { page = 1 }, new { @class = "btn btn-success", style = "margin-left: 8px;" })
+    <a class="btn btn-primary" style="margin-left: 8px;" href="#" onclick="window.print(); return false;">Print</a>
+    <table class="table">
+        <tr>
+            <th>
+                Mã nhân viên
+            </th>
+            <th>
+                Tên nhân viên
+            </th>
+            <th>
+                Giới tính
+            </th>
+            <th>
+                Địa chỉ
+            </th>
+            <th>
+                Điện thoại
+            </th>
+            <th>
+                Ngày sinh
+            </th>
+            <th>
+                UserName
+            </th>
+            <th>
+                PassWord
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NVInfo.MaNV)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NVInfo.TenNV)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NVInfo.GioiTinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NVInfo.DiaChi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NVInfo.DienThoai)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NVInfo.NgaySinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.Username)
+                </td>
+                <td>
+                    ********
+                </td>
+                <td>
+                @Html.HiddenFor(modelItem => item.NVInfo.NVUserId)
+
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <h2>Danh sách thông tin nhân viên</h2>
+    @Html.ActionLink("Print list", "Index", new { page = 1, pSize = 0 }, new { @class = "btn btn-success" })
+    <table class="table">
+        <tr>
+            <th>
+                Mã nhân viên
+            </th>
+            <th>
+                Tên nhân viên
+            </th>
+            <th>
+                Giới tính
+            </th>
+            <th>
+                Địa chỉ
+            </th>
+            <th>
+                Điện thoại
+            </th>
+            <th>
+                Ngày sinh
+            </th>
+            <th>
+                UserName
+            </th>
+            <th>
+                PassWord
+            </th>
+            @*<th>
+                    NVUserID
+                </th>*@
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NVInfo.MaNV)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NVInfo.TenNV)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NVInfo.GioiTinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NVInfo.DiaChi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NVInfo.DienThoai)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NVInfo.NgaySinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.Username)
+                </td>
+                <td>
+                    ********
+                </td>
+                <td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.NVInfo.MaNV }, new { @class = "btn btn-primary" })
+                </td>
+                @Html.HiddenFor(modelItem => item.NVInfo.NVUserId)
+
+            </tr>
+        }
+
+    </table>
+}
 @*<p>
         @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary"})
     </p>*@
-<table class="table">
-    <tr>
-        <th>
-            Mã nhân viên
-        </th>
-        <th>
-            Tên nhân viên
-        </th>
-        <th>
-            Giới tính 
-        </th>
-        <th>
-            Địa chỉ
-        </th>
-        <th>
-            Điện thoại
-        </th>
-        <th>
-            Ngày sinh
-        </th>
-        <th>
-            UserName
-        </th>
-        <th>
-            PassWord
-        </th>
-        <th>
-            NVUserID
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NVInfo.MaNV)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NVInfo.TenNV)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NVInfo.GioiTinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NVInfo.DiaChi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NVInfo.DienThoai)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NVInfo.NgaySinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserInfo.Username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserInfo.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NVInfo.NVUserId)
-            </td>
-            <td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.NVInfo.MaNV }, new { @class = "btn btn-primary" })
-            </td>
-        </tr>
-    }
-
-</table>
 <div class="pagination-container">
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 </div>
